@@ -1,0 +1,202 @@
+.product-filters-container {
+  background-color: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  padding: 24px;
+  margin-bottom: 32px;
+  box-shadow: var(--shadow-sm);
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.filters-top-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 16px;
+  align-items: center;
+}
+
+.filter-search-wrapper {
+  position: relative;
+  flex: 1;
+  min-width: 240px;
+}
+
+.filter-search-icon {
+  position: absolute;
+  left: 14px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+  pointer-events: none;
+}
+
+.filter-search-input {
+  width: 100%;
+  padding: 12px 14px 12px 42px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-primary);
+  font-size: 14px;
+  color: var(--color-text-dark);
+  transition: border-color var(--transition-fast), box-shadow var(--transition-fast);
+  outline: none;
+}
+
+.filter-search-input:focus {
+  border-color: var(--color-brand-magenta);
+  box-shadow: 0 0 0 3px var(--color-brand-magenta-light);
+}
+
+.filter-sort-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.filter-select {
+  padding: 12px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-primary);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.filter-select:focus {
+  border-color: var(--color-brand-magenta);
+}
+
+.filters-bottom-row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--color-border);
+}
+
+.category-filter-group {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: center;
+}
+
+.category-chip {
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-muted);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background-color var(--transition-fast), color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.category-chip:hover {
+  border-color: var(--color-brand-magenta);
+  color: var(--color-brand-magenta);
+}
+
+.category-chip-active {
+  background-color: var(--color-brand-magenta);
+  color: var(--color-text-light);
+  border-color: var(--color-brand-magenta);
+}
+
+.category-chip-active:hover {
+  background-color: var(--color-brand-magenta-hover);
+  color: var(--color-text-light);
+}
+
+.price-range-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.price-range-label {
+  font-size: 13px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+}
+
+.price-input-wrapper {
+  position: relative;
+  width: 90px;
+}
+
+.price-input-prefix {
+  position: absolute;
+  left: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.price-input {
+  width: 100%;
+  padding: 8px 10px 8px 24px;
+  border-radius: var(--radius-sm);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-primary);
+  font-size: 13px;
+  color: var(--color-text-dark);
+  outline: none;
+  transition: border-color var(--transition-fast);
+}
+
+.price-input:focus {
+  border-color: var(--color-brand-magenta);
+}
+
+.price-range-separator {
+  color: var(--color-text-muted);
+  font-weight: 600;
+}
+
+.clear-filters-btn {
+  padding: 8px 14px;
+  border-radius: var(--radius-sm);
+  border: 1px dashed var(--color-border-hover);
+  background: transparent;
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+  transition: color var(--transition-fast), border-color var(--transition-fast);
+}
+
+.clear-filters-btn:hover {
+  color: var(--color-brand-magenta);
+  border-color: var(--color-brand-magenta);
+}
+
+@media (max-width: 768px) {
+  .product-filters-container {
+    padding: 16px;
+    gap: 16px;
+  }
+
+  .filters-bottom-row {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .price-range-group {
+    width: 100%;
+    flex-wrap: wrap;
+  }
+}

@@ -1,0 +1,47 @@
+:root {
+  --color-bg-primary: #FAF7F2;
+  --color-bg-card: #FFFFFF;
+  --color-bg-card-hover: #FFFDF9;
+  --color-brand-magenta: #D91C73;
+  --color-brand-magenta-hover: #B8145F;
+  --color-brand-magenta-light: #FCE7F0;
+  --color-text-dark: #121212;
+  --color-text-muted: #6B6866;
+  --color-text-light: #FFFFFF;
+  --color-border: #E8E2D9;
+  --color-border-hover: #D0C8BD;
+  --font-family-display: 'Impact', 'Arial Black', -apple-system, BlinkMacSystemFont, sans-serif;
+  --font-family-body: system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+  --radius-sm: 8px;
+  --radius-md: 14px;
+  --radius-lg: 20px;
+  --radius-pill: 9999px;
+  --shadow-sm: 0 2px 8px rgba(18, 18, 18, 0.04);
+  --shadow-md: 0 10px 24px rgba(18, 18, 18, 0.08);
+  --shadow-lg: 0 20px 40px rgba(18, 18, 18, 0.12);
+  --transition-fast: 0.2s ease;
+  --transition-normal: 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-dark);
+  font-family: var(--font-family-body);
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+button {
+  font-family: inherit;
+  cursor: pointer;
+}
+
+input, select {
+  font-family: inherit;
+}
