@@ -3,6 +3,7 @@
   background-color: var(--color-bg-primary);
   display: flex;
   flex-direction: column;
+  width: 100%;
 }
 
 /* KIXON Header */
@@ -13,6 +14,10 @@
   padding: 24px 60px;
   background-color: var(--color-bg-primary);
   border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
 }
 
 .kixon-logo {
@@ -22,6 +27,7 @@
   letter-spacing: -0.5px;
   color: var(--color-text-dark);
   text-transform: uppercase;
+  user-select: none;
 }
 
 .kixon-logo-accent {
@@ -64,11 +70,38 @@
   background-color: var(--color-brand-magenta);
 }
 
-/* Header Actions (Wishlist button) */
+/* Header Actions (Wishlist button & Burger button) */
 .kixon-header-actions {
   display: flex;
   align-items: center;
-  gap: 16px;
+  gap: 12px;
+}
+
+.kixon-burger-btn {
+  display: none;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+  padding: 0;
+}
+
+.kixon-burger-btn:hover {
+  border-color: var(--color-brand-magenta);
+  color: var(--color-brand-magenta);
+  box-shadow: var(--shadow-sm);
+}
+
+.kixon-burger-icon {
+  width: 20px;
+  height: 20px;
 }
 
 .kixon-wishlist-nav-btn {
@@ -85,6 +118,7 @@
   letter-spacing: 0.3px;
   text-transform: uppercase;
   transition: all var(--transition-fast);
+  min-height: 40px;
 }
 
 .kixon-wishlist-nav-btn:hover {
@@ -97,6 +131,7 @@
   width: 16px;
   height: 16px;
   color: var(--color-brand-magenta);
+  flex-shrink: 0;
 }
 
 .kixon-wishlist-badge {
@@ -119,7 +154,7 @@
   flex: 1;
 }
 
-/* Redesigned Hero Section */
+/* Hero Section */
 .products-hero-section {
   display: flex;
   flex-direction: column;
@@ -149,7 +184,7 @@
   flex-wrap: wrap;
   align-items: flex-end;
   justify-content: space-between;
-  gap: 20px;
+  gap: 16px;
 }
 
 .products-hero-title {
@@ -161,6 +196,13 @@
   color: var(--color-text-dark);
   margin: 0;
   text-transform: uppercase;
+}
+
+.products-hero-title-accent {
+  background: linear-gradient(135deg, var(--color-brand-magenta) 0%, #FF3366 50%, #FF8C33 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
 }
 
 .products-hero-meta {
@@ -187,27 +229,95 @@
   line-height: 1.6;
 }
 
+/* Tablet Responsiveness */
+@media (max-width: 900px) {
+  .kixon-header {
+    padding: 18px 32px;
+  }
+
+  .products-page-main {
+    padding: 32px 24px 60px;
+  }
+
+  .products-hero-title {
+    font-size: 48px;
+  }
+}
+
+/* Mobile Responsiveness */
 @media (max-width: 768px) {
   .kixon-header {
-    padding: 18px 24px;
-    flex-wrap: wrap;
-    gap: 12px;
+    padding: 14px 20px;
   }
 
   .kixon-nav {
     display: none;
   }
 
-  .products-page-main {
-    padding: 28px 18px 50px;
+  .kixon-logo {
+    font-size: 24px;
   }
 
-  .products-hero-title {
-    font-size: 40px;
+  .kixon-burger-btn {
+    display: flex;
+  }
+
+  .kixon-wishlist-nav-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .products-page-main {
+    padding: 24px 16px 48px;
+  }
+
+  .products-hero-section {
+    gap: 10px;
+    margin-bottom: 28px;
   }
 
   .products-hero-heading-row {
     flex-direction: column;
     align-items: flex-start;
+    gap: 8px;
+  }
+
+  .products-hero-title {
+    font-size: 38px;
+    letter-spacing: -1px;
+    line-height: 1.05;
+  }
+
+  .products-hero-desc {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+/* Small Smartphone (<= 480px) */
+@media (max-width: 480px) {
+  .kixon-header {
+    padding: 12px 14px;
+  }
+
+  .kixon-logo {
+    font-size: 22px;
+  }
+
+  .products-page-main {
+    padding: 18px 12px 40px;
+  }
+
+  .products-hero-title {
+    font-size: 32px;
+  }
+
+  .products-hero-meta {
+    font-size: 12px;
+  }
+
+  .products-hero-count {
+    font-size: 16px;
   }
 }

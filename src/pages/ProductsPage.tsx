@@ -5,6 +5,7 @@ import { initialProductsSeed } from '../seed/productsSeed';
 import { ProductFilters } from '../components/ProductFilters';
 import { ProductGrid } from '../components/ProductGrid';
 import { WishlistDrawer } from '../components/WishlistDrawer';
+import { MobileNavDrawer } from '../components/MobileNavDrawer';
 import '../styles/ProductsPage.css';
 
 const WISHLIST_STORAGE_KEY = 'kixon_wishlist';
@@ -28,6 +29,7 @@ export const ProductsPage: FC = () => {
   });
 
   const [isWishlistOpen, setIsWishlistOpen] = useState<boolean>(false);
+  const [isMobileNavOpen, setIsMobileNavOpen] = useState<boolean>(false);
 
   // Persist Wishlist in localStorage
   useEffect(() => {
@@ -152,6 +154,27 @@ export const ProductsPage: FC = () => {
               <span className="kixon-wishlist-badge">{wishlist.length}</span>
             )}
           </button>
+
+          <button
+            type="button"
+            className="kixon-burger-btn"
+            onClick={() => setIsMobileNavOpen(true)}
+            aria-label="Open navigation menu"
+          >
+            <svg
+              className="kixon-burger-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <line x1="3" y1="6" x2="21" y2="6" />
+              <line x1="3" y1="12" x2="21" y2="12" />
+              <line x1="3" y1="18" x2="21" y2="18" />
+            </svg>
+          </button>
         </div>
       </header>
 
@@ -160,16 +183,14 @@ export const ProductsPage: FC = () => {
         {/* Hero Header */}
         <section className="products-hero-section">
           <div className="products-hero-heading-row">
-            <h1 className="products-hero-title">Move Bold</h1>
+            <h1 className="products-hero-title">
+              Move <span className="products-hero-title-accent">Bold</span>
+            </h1>
             <div className="products-hero-meta">
               <span className="products-hero-count">{filteredProducts.length}</span>
               <span>/ {products.length} Items</span>
             </div>
           </div>
-
-          <p className="products-hero-desc">
-            KIXON isn't just a sneaker brand — it's a lifestyle built for the fearless. Designed for creators, dreamers, and doers, our shoes fuse performance tech with urban aesthetics.
-          </p>
         </section>
 
         {/* Toolbar & Filters */}
@@ -203,6 +224,13 @@ export const ProductsPage: FC = () => {
         wishlist={wishlist}
         onRemoveFromWishlist={handleRemoveFromWishlist}
         onClearWishlist={handleClearWishlist}
+      />
+
+      {/* Mobile Navigation Drawer */}
+      <MobileNavDrawer
+        isOpen={isMobileNavOpen}
+        onClose={() => setIsMobileNavOpen(false)}
+        activePage="Products"
       />
     </div>
   );
