@@ -70,6 +70,7 @@ export const ProductsPage: FC = () => {
 
   return (
     <div className="products-page-container">
+      {/* KIXON Header */}
       <header className="kixon-header">
         <div className="kixon-logo">
           KIX<span className="kixon-logo-accent">ON</span>
@@ -82,15 +83,28 @@ export const ProductsPage: FC = () => {
         </nav>
       </header>
 
+      {/* Main Content */}
       <main className="products-page-main">
-        <section className="products-hero-banner">
-          <span className="products-hero-badge">Curated Collection</span>
-          <h1 className="products-hero-title">Move Bold</h1>
-          <p className="products-hero-subtitle">
-            Engineered for performance, styled for the fearless. Explore the full line of premium sneakers.
+        {/* Redesigned Hero Header */}
+        <section className="products-hero-section">
+          <div className="products-hero-tag-row">
+            <span className="products-hero-pill">DROP 01 // SS26</span>
+          </div>
+
+          <div className="products-hero-heading-row">
+            <h1 className="products-hero-title">Move Bold</h1>
+            <div className="products-hero-meta">
+              <span className="products-hero-count">{filteredProducts.length}</span>
+              <span>/ {products.length} Items</span>
+            </div>
+          </div>
+
+          <p className="products-hero-desc">
+            KIXON isn't just a sneaker brand — it's a lifestyle built for the fearless. Designed for creators, dreamers, and doers, our shoes fuse performance tech with urban aesthetics.
           </p>
         </section>
 
+        {/* Redesigned Toolbar & Filters */}
         <ProductFilters
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -106,12 +120,7 @@ export const ProductsPage: FC = () => {
           onResetFilters={handleResetFilters}
         />
 
-        <div className="products-results-info">
-          <span>
-            Showing <span className="products-count-highlight">{filteredProducts.length}</span> of {products.length} products
-          </span>
-        </div>
-
+        {/* Product Grid */}
         <ProductGrid products={filteredProducts} />
       </main>
     </div>

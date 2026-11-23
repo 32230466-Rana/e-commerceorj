@@ -47,16 +47,48 @@ export const ProductFilters: FC<ProductFiltersProps> = ({
     onSortChange(e.target.value as SortOrder);
   };
 
+  const isFiltered =
+    searchTerm !== '' ||
+    selectedCategory !== 'All' ||
+    minPrice !== '' ||
+    maxPrice !== '' ||
+    sortOrder !== 'none';
+
   return (
-    <div className="product-filters-container">
-      <div className="filters-top-row">
-        <div className="filter-search-wrapper">
+    <div className="product-filters-toolbar">
+      {/* Category Pills Bar */}
+      <div className="filter-categories-bar">
+        <button
+          type="button"
+          className={`category-tab-btn ${selectedCategory === 'All' ? 'category-tab-btn-active' : ''
+            }`}
+          onClick={() => onSelectCategory('All')}
+        >
+          All
+        </button>
+        {categories.map((category) => (
+          <button
+            key={category}
+            type="button"
+            className={`category-tab-btn ${selectedCategory === category ? 'category-tab-btn-active' : ''
+              }`}
+            onClick={() => onSelectCategory(category)}
+          >
+            {category}
+          </button>
+        ))}
+      </div>
+
+      {/* Clean Unified Floating Controls Bar */}
+      <div className="filter-controls-row">
+        {/* Search */}
+        <div className="filter-search-box">
           <svg
             className="filter-search-icon"
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
-            strokeWidth="2"
+            strokeWidth="2.5"
             strokeLinecap="round"
             strokeLinejoin="round"
           >
@@ -65,83 +97,85 @@ export const ProductFilters: FC<ProductFiltersProps> = ({
           </svg>
           <input
             type="text"
-            className="filter-search-input"
-            placeholder="Search shoes by name..."
+            className="filter-search-input-field"
+            placeholder="Search shoes by model or name..."
             value={searchTerm}
             onChange={handleSearchInput}
-            aria-label="Search shoes by name"
+            aria-label="Search shoes by model or name"
           />
-        </div>
-
-        <div className="filter-sort-wrapper">
-          <select
-            className="filter-select"
-            value={sortOrder}
-            onChange={handleSortSelect}
-            aria-label="Sort by price"
-          >
-            <option value="none">Sort: Default</option>
-            <option value="price-asc">Price: Low to High</option>
-            <option value="price-desc">Price: High to Low</option>
-          </select>
-        </div>
-      </div>
-
-      <div className="filters-bottom-row">
-        <div className="category-filter-group">
-          <button
-            type="button"
-            className={`category-chip ${selectedCategory === 'All' ? 'category-chip-active' : ''}`}
-            onClick={() => onSelectCategory('All')}
-          >
-            All Categories
-          </button>
-          {categories.map((category) => (
+          {searchTerm && (
             <button
-              key={category}
               type="button"
-              className={`category-chip ${selectedCategory === category ? 'category-chip-active' : ''}`}
-              onClick={() => onSelectCategory(category)}
+              className="filter-search-clear-btn"
+              onClick={() => onSearchChange('')}
+              aria-label="Clear search"
             >
-              {category}
+              ✕
             </button>
-          ))}
+          )}
         </div>
 
-        <div className="price-range-group">
-          <span className="price-range-label">Price Range:</span>
-          <div className="price-input-wrapper">
-            <span className="price-input-prefix">$</span>
+        {/* Secondary controls: Price range & Sort */}
+        <div className="filter-actions-group">
+          {/* Price Range */}
+          <div className="filter-price-selector">
+            <span className="filter-price-tag">Price</span>
             <input
               type="number"
-              className="price-input"
-              placeholder="Min"
+              className="filter-price-input"
+              placeholder="$0"
               min="0"
               value={minPrice}
               onChange={handleMinPriceInput}
-              aria-label="Minimum price"
+              aria-label="Min price"
             />
-          </div>
-          <span className="price-range-separator">-</span>
-          <div className="price-input-wrapper">
-            <span className="price-input-prefix">$</span>
+            <span className="filter-price-divider">–</span>
             <input
               type="number"
-              className="price-input"
-              placeholder="Max"
+              className="filter-price-input"
+              placeholder="$999"
               min="0"
               value={maxPrice}
               onChange={handleMaxPriceInput}
-              aria-label="Maximum price"
+              aria-label="Max price"
             />
           </div>
-          <button
-            type="button"
-            className="clear-filters-btn"
-            onClick={onResetFilters}
-          >
-            Reset
-          </button>
+
+          {/* Sort Dropdown */}
+          <div className="filter-sort-dropdown-wrapper">
+            <select
+              className="filter-sort-dropdown"
+              value={sortOrder}
+              onChange={handleSortSelect}
+              aria-label="Sort products by price"
+            >
+              <option value="none">Sort: Featured</option>
+              <option value="price-asc">Price: Low to High</option>
+              <option value="price-desc">Price: High to Low</option>
+            </select>
+            <svg
+              className="filter-sort-arrow-icon"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <polyline points="6 9 12 15 18 9" />
+            </svg>
+          </div>
+
+          {/* Reset Filters */}
+          {isFiltered && (
+            <button
+              type="button"
+              className="filter-reset-action-btn"
+              onClick={onResetFilters}
+            >
+              Reset
+            </button>
+          )}
         </div>
       </div>
     </div>
