@@ -5,9 +5,15 @@ import '../styles/ProductGrid.css';
 
 interface ProductGridProps {
   products: Product[];
+  wishlistIds?: string[];
+  onToggleWishlist?: (product: Product) => void;
 }
 
-export const ProductGrid: FC<ProductGridProps> = ({ products }) => {
+export const ProductGrid: FC<ProductGridProps> = ({
+  products,
+  wishlistIds = [],
+  onToggleWishlist,
+}) => {
   if (products.length === 0) {
     return (
       <div className="no-results-container">
@@ -35,7 +41,12 @@ export const ProductGrid: FC<ProductGridProps> = ({ products }) => {
   return (
     <div className="product-grid">
       {products.map((product) => (
-        <ProductCard key={product.id} product={product} />
+        <ProductCard
+          key={product.id}
+          product={product}
+          isInWishlist={wishlistIds.includes(product.id)}
+          onToggleWishlist={onToggleWishlist}
+        />
       ))}
     </div>
   );

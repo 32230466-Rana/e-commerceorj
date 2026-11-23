@@ -64,6 +64,52 @@
   background-color: var(--color-brand-magenta);
 }
 
+/* Header Actions (Wishlist button) */
+.kixon-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+}
+
+.kixon-wishlist-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: #FFFFFF;
+  color: var(--color-text-dark);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
+}
+
+.kixon-wishlist-nav-btn:hover {
+  border-color: var(--color-brand-magenta);
+  color: var(--color-brand-magenta);
+  box-shadow: var(--shadow-sm);
+}
+
+.kixon-wishlist-nav-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-brand-magenta);
+}
+
+.kixon-wishlist-badge {
+  background-color: var(--color-brand-magenta);
+  color: var(--color-text-light);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  min-width: 18px;
+  text-align: center;
+}
+
 /* Main Container */
 .products-page-main {
   max-width: 1320px;
@@ -144,10 +190,12 @@
 @media (max-width: 768px) {
   .kixon-header {
     padding: 18px 24px;
+    flex-wrap: wrap;
+    gap: 12px;
   }
 
   .kixon-nav {
-    gap: 18px;
+    display: none;
   }
 
   .products-page-main {

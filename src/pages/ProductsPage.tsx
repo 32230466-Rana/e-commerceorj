@@ -1,10 +1,13 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, useEffect } from 'react';
 import type { FC } from 'react';
 import type { Product, SortOrder } from '../types/product';
 import { initialProductsSeed } from '../seed/productsSeed';
 import { ProductFilters } from '../components/ProductFilters';
 import { ProductGrid } from '../components/ProductGrid';
+import { WishlistDrawer } from '../components/WishlistDrawer';
 import '../styles/ProductsPage.css';
+
+const WISHLIST_STORAGE_KEY = 'kixon_wishlist';
 
 export const ProductsPage: FC = () => {
   const [products] = useState<Product[]>(initialProductsSeed);
@@ -13,6 +16,49 @@ export const ProductsPage: FC = () => {
   const [minPrice, setMinPrice] = useState<string>('');
   const [maxPrice, setMaxPrice] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('none');
+
+  // Wishlist State
+  const [wishlist, setWishlist] = useState<Product[]>(() => {
+    try {
+      const saved = localStorage.getItem(WISHLIST_STORAGE_KEY);
+      return saved ? JSON.parse(saved) : [];
+    } catch {
+      return [];
+    }
+  });
+
+  const [isWishlistOpen, setIsWishlistOpen] = useState<boolean>(false);
+
+  // Persist Wishlist in localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
+    } catch {
+      // Ignore storage write issues
+    }
+  }, [wishlist]);
+
+  const wishlistIds = useMemo(() => {
+    return wishlist.map((item) => item.id);
+  }, [wishlist]);
+
+  const handleToggleWishlist = (product: Product) => {
+    setWishlist((prev) => {
+      const exists = prev.some((item) => item.id === product.id);
+      if (exists) {
+        return prev.filter((item) => item.id !== product.id);
+      }
+      return [...prev, product];
+    });
+  };
+
+  const handleRemoveFromWishlist = (productId: string) => {
+    setWishlist((prev) => prev.filter((item) => item.id !== productId));
+  };
+
+  const handleClearWishlist = () => {
+    setWishlist([]);
+  };
 
   const categories = useMemo(() => {
     const unique = Array.from(new Set(products.map((p) => p.category)));
@@ -75,22 +121,44 @@ export const ProductsPage: FC = () => {
         <div className="kixon-logo">
           KIX<span className="kixon-logo-accent">ON</span>
         </div>
+
         <nav className="kixon-nav">
           <span className="kixon-nav-link">Home</span>
           <span className="kixon-nav-link">About</span>
           <span className="kixon-nav-link kixon-nav-link-active">Products</span>
           <span className="kixon-nav-link">Contact</span>
         </nav>
+
+        <div className="kixon-header-actions">
+          <button
+            type="button"
+            className="kixon-wishlist-nav-btn"
+            onClick={() => setIsWishlistOpen(true)}
+            aria-label={`Open wishlist, ${wishlist.length} items`}
+          >
+            <svg
+              className="kixon-wishlist-nav-icon"
+              viewBox="0 0 24 24"
+              fill={wishlist.length > 0 ? 'currentColor' : 'none'}
+              stroke="currentColor"
+              strokeWidth="2"
+              strokeLinecap="round"
+              strokeLinejoin="round"
+            >
+              <path d="M19 14c1.49-1.46 3-3.21 3-5.5A5.5 5.5 0 0 0 16.5 3c-1.76 0-3 .5-4.5 2-1.5-1.5-2.74-2-4.5-2A5.5 5.5 0 0 0 2 8.5c0 2.3 1.5 4.05 3 5.5l7 7Z" />
+            </svg>
+            <span>Wishlist</span>
+            {wishlist.length > 0 && (
+              <span className="kixon-wishlist-badge">{wishlist.length}</span>
+            )}
+          </button>
+        </div>
       </header>
 
       {/* Main Content */}
       <main className="products-page-main">
-        {/* Redesigned Hero Header */}
+        {/* Hero Header */}
         <section className="products-hero-section">
-          <div className="products-hero-tag-row">
-            <span className="products-hero-pill">DROP 01 // SS26</span>
-          </div>
-
           <div className="products-hero-heading-row">
             <h1 className="products-hero-title">Move Bold</h1>
             <div className="products-hero-meta">
@@ -104,7 +172,7 @@ export const ProductsPage: FC = () => {
           </p>
         </section>
 
-        {/* Redesigned Toolbar & Filters */}
+        {/* Toolbar & Filters */}
         <ProductFilters
           searchTerm={searchTerm}
           onSearchChange={setSearchTerm}
@@ -121,8 +189,21 @@ export const ProductsPage: FC = () => {
         />
 
         {/* Product Grid */}
-        <ProductGrid products={filteredProducts} />
+        <ProductGrid
+          products={filteredProducts}
+          wishlistIds={wishlistIds}
+          onToggleWishlist={handleToggleWishlist}
+        />
       </main>
+
+      {/* Wishlist Drawer */}
+      <WishlistDrawer
+        isOpen={isWishlistOpen}
+        onClose={() => setIsWishlistOpen(false)}
+        wishlist={wishlist}
+        onRemoveFromWishlist={handleRemoveFromWishlist}
+        onClearWishlist={handleClearWishlist}
+      />
     </div>
   );
 };

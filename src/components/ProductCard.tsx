@@ -4,23 +4,38 @@ import '../styles/ProductCard.css';
 
 interface ProductCardProps {
   product: Product;
+  isInWishlist?: boolean;
+  onToggleWishlist?: (product: Product) => void;
 }
 
-export const ProductCard: FC<ProductCardProps> = ({ product }) => {
+export const ProductCard: FC<ProductCardProps> = ({
+  product,
+  isInWishlist = false,
+  onToggleWishlist,
+}) => {
+  const handleWishlistClick = () => {
+    if (onToggleWishlist) {
+      onToggleWishlist(product);
+    }
+  };
+
   return (
     <article className="product-card">
       <div className="product-card-image-wrapper">
         <span className="product-card-category-badge">{product.category}</span>
         <button
           type="button"
-          className="product-card-wishlist-btn"
-          aria-label="Add to Wishlist"
-          title="Add to Wishlist"
+          className={`product-card-wishlist-btn ${
+            isInWishlist ? 'product-card-wishlist-btn-active' : ''
+          }`}
+          onClick={handleWishlistClick}
+          aria-label={isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
+          title={isInWishlist ? 'Remove from Wishlist' : 'Add to Wishlist'}
         >
           <svg
             className="product-card-wishlist-icon"
             viewBox="0 0 24 24"
-            fill="none"
+            fill={isInWishlist ? 'currentColor' : 'none'}
             stroke="currentColor"
             strokeWidth="2"
             strokeLinecap="round"
