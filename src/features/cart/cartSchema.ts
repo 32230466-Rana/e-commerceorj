@@ -2,8 +2,17 @@ import { z } from "zod";
 
 export const MAX_LINE_QUANTITY = 10;
 
+/**
+ * Catalog ids are strings. Carts saved before the integration used numeric ids
+ * (Developer C's original 1, 2, 3); they are converted instead of discarded.
+ */
+const productIdSchema = z.union([
+  z.string().min(1).max(64),
+  z.number().int().positive().transform((id) => String(id)),
+]);
+
 export const cartItemSchema = z.object({
-  productId: z.number().int().positive(),
+  productId: productIdSchema,
   // Older saved carts had no upper bound; clamp instead of discarding them.
   quantity: z
     .number()
@@ -25,13 +34,13 @@ export const persistedCartSchema = z.object({
 });
 
 const orderLineSchema = z.object({
-  productId: z.number().int().positive(),
+  productId: productIdSchema,
   name: z.string(),
   image: z.string(),
   unitPrice: z.number().nonnegative(),
   quantity: z.number().int().positive(),
-  size: z.number().int().positive(),
-  color: z.string(),
+  size: z.number().int().positive().optional(),
+  color: z.string().optional(),
 });
 
 export const orderSchema = z.object({

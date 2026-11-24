@@ -1,5 +1,6 @@
 export interface CartItem {
-  productId: number;
+  /** Shared catalog id (src/catalog/catalog.ts). */
+  productId: string;
   quantity: number;
   /** Selected size; must be one of the product's supported sizes. */
   size?: number;
@@ -14,13 +15,14 @@ export interface CartState {
 }
 
 export interface OrderLine {
-  productId: number;
+  productId: string;
   name: string;
   image: string;
   unitPrice: number;
   quantity: number;
-  size: number;
-  color: string;
+  /** Present only for products that have size/colour variants. */
+  size?: number;
+  color?: string;
 }
 
 export interface OrderTotals {

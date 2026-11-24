@@ -7,9 +7,9 @@ import type { CartState } from "./types";
  */
 export const demoCartState: CartState = {
   items: [
-    { productId: 1, quantity: 1, size: 42, color: "Red", selected: true },
-    { productId: 2, quantity: 2, size: 41, color: "White", selected: true },
-    { productId: 3, quantity: 1, size: 43, color: "Black", selected: true },
+    { productId: "1", quantity: 1, size: 42, color: "Red", selected: true },
+    { productId: "2", quantity: 2, size: 41, color: "White", selected: true },
+    { productId: "3", quantity: 1, size: 43, color: "Black", selected: true },
   ],
 };
 

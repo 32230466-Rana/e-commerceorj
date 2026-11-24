@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { CART_STORAGE_KEY, loadCart, loadLastOrder, saveCart, saveLastOrder } from "../cartStorage";
+import { CART_STORAGE_KEY, LEGACY_SECTION_A_CART_KEY, loadCart, loadLastOrder, saveCart, saveLastOrder } from "../cartStorage";
 import { checkoutSchema } from "../checkoutSchema";
 import { isDemoCartRequested } from "../demoCart";
 
@@ -21,7 +21,7 @@ function memoryStorage(): Storage {
 describe("cart storage", () => {
   it("round-trips a cart", () => {
     const storage = memoryStorage();
-    const cart = { items: [{ productId: 1, quantity: 2, size: 42, color: "Red", selected: false }] };
+    const cart = { items: [{ productId: "1", quantity: 2, size: 42, color: "Red", selected: false }] };
     saveCart(cart, storage);
     expect(loadCart(storage)).toEqual(cart);
   });
@@ -31,14 +31,23 @@ describe("cart storage", () => {
     expect(loadCart(storage)).toEqual({ items: [] });
     storage.setItem(CART_STORAGE_KEY, "{broken");
     expect(loadCart(storage)).toEqual({ items: [] });
-    storage.setItem(CART_STORAGE_KEY, JSON.stringify({ version: 1, cart: { items: [{ productId: "x", quantity: 1 }] } }));
+    storage.setItem(CART_STORAGE_KEY, JSON.stringify({ version: 1, cart: { items: [{ productId: 0, quantity: 1 }] } }));
     expect(loadCart(storage)).toEqual({ items: [] });
   });
 
   it("migrates older carts by clamping very large quantities", () => {
     const storage = memoryStorage();
     storage.setItem(CART_STORAGE_KEY, JSON.stringify({ version: 1, cart: { items: [{ productId: 1, quantity: 40 }] } }));
-    expect(loadCart(storage).items[0].quantity).toBe(10);
+    // Pre-integration carts stored numeric ids; they become the shared catalog's string ids.
+    expect(loadCart(storage).items[0]).toMatchObject({ productId: "1", quantity: 10 });
+  });
+
+  it("imports Section A's pre-integration cart once, keeping only catalog products", () => {
+    const storage = memoryStorage();
+    storage.setItem(LEGACY_SECTION_A_CART_KEY, JSON.stringify([{ productId: "flame-01", quantity: 2 }, { productId: "gone", quantity: 1 }]));
+    expect(loadCart(storage)).toEqual({ items: [{ productId: "flame-01", quantity: 2, selected: true }] });
+    storage.setItem(CART_STORAGE_KEY, JSON.stringify({ version: 1, cart: { items: [] } }));
+    expect(loadCart(storage)).toEqual({ items: [] });
   });
 
   it("stores and clears the last order", () => {
@@ -46,7 +55,7 @@ describe("cart storage", () => {
     const order = {
       id: "SX-1",
       createdAt: "2026-01-01T00:00:00.000Z",
-      lines: [{ productId: 1, name: "Nike Air Jordan 1", image: "/shoes/jordan.png", unitPrice: 179.99, quantity: 1, size: 42, color: "Red" }],
+      lines: [{ productId: "1", name: "Nike Air Jordan 1", image: "/shoes/jordan.png", unitPrice: 179.99, quantity: 1, size: 42, color: "Red" }],
       totals: { itemCount: 1, subtotal: 179.99, shipping: 0, total: 179.99 },
       customer: { fullName: "Alex Morgan", email: "alex@example.com", city: "Beirut" },
     };

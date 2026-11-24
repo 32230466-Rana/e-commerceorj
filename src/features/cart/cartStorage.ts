@@ -1,7 +1,10 @@
-import { orderSchema, persistedCartSchema } from "./cartSchema";
+import { getCatalogProduct } from "../../catalog/catalog";
+import { cartItemSchema, orderSchema, persistedCartSchema } from "./cartSchema";
 import type { CartState, Order } from "./types";
 
 export const CART_STORAGE_KEY = "solex:cart:v1";
+/** Section A's pre-integration cart ({ productId: string, quantity }[]), imported once. */
+export const LEGACY_SECTION_A_CART_KEY = "kixon-cart";
 export const ORDER_STORAGE_KEY = "solex:last-order:v1";
 
 const emptyCart = (): CartState => ({ items: [] });
@@ -10,10 +13,26 @@ const emptyCart = (): CartState => ({ items: [] });
 export function loadCart(storage: Storage | undefined = safeStorage("localStorage")): CartState {
   try {
     const stored = storage?.getItem(CART_STORAGE_KEY);
-    if (!stored) return emptyCart();
+    if (!stored) return loadLegacySectionACart(storage);
 
     const result = persistedCartSchema.safeParse(JSON.parse(stored));
     return result.success ? result.data.cart : emptyCart();
+  } catch {
+    return emptyCart();
+  }
+}
+
+function loadLegacySectionACart(storage: Storage | undefined): CartState {
+  try {
+    const legacy = storage?.getItem(LEGACY_SECTION_A_CART_KEY);
+    if (!legacy) return emptyCart();
+    const parsed = JSON.parse(legacy);
+    if (!Array.isArray(parsed)) return emptyCart();
+    const items = parsed.flatMap((entry) => {
+      const result = cartItemSchema.safeParse({ ...entry, selected: true });
+      return result.success && getCatalogProduct(result.data.productId) ? [result.data] : [];
+    });
+    return { items };
   } catch {
     return emptyCart();
   }

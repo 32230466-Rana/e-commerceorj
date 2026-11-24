@@ -1,10 +1,10 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { MAX_LINE_QUANTITY } from "./cartSchema";
 import {
-  getSneakerById,
+  getCatalogProduct,
   isSupportedColor,
   isSupportedSize,
-} from "./demoSneakers";
+} from "../../catalog/catalog";
 import type { CartState, Order } from "./types";
 //addItem,updateQuantity,removeItem,clearCart,updateVariant
 const initialState: CartState = {
@@ -21,7 +21,7 @@ const cartSlice = createSlice({
     addItem: (
       state,
       action: PayloadAction<{
-        productId: number;
+        productId: string;
         quantity?: number;
         size?: number;
         color?: string;
@@ -29,9 +29,9 @@ const cartSlice = createSlice({
     ) => {
       const { productId, quantity = 1, size, color } = action.payload;
 
-      if (!isPositiveInt(productId) || !isPositiveInt(quantity)) return;
+      if (!getCatalogProduct(productId) || !isPositiveInt(quantity)) return;
 
-      const product = getSneakerById(productId);
+      const product = getCatalogProduct(productId);
       const existing = state.items.find((item) => item.productId === productId);
 
       if (existing) {
@@ -58,7 +58,7 @@ const cartSlice = createSlice({
       });
     },
 
-    removeItem: (state, action: PayloadAction<number>) => {
+    removeItem: (state, action: PayloadAction<string>) => {
       state.items = state.items.filter(
         (item) => item.productId !== action.payload
       );
@@ -66,7 +66,7 @@ const cartSlice = createSlice({
 
     updateQuantity: (
       state,
-      action: PayloadAction<{ productId: number; quantity: number }>
+      action: PayloadAction<{ productId: string; quantity: number }>
     ) => {
       const { productId, quantity } = action.payload;
 
@@ -80,14 +80,14 @@ const cartSlice = createSlice({
     updateVariant: (
       state,
       action: PayloadAction<{
-        productId: number;
+        productId: string;
         size?: number;
         color?: string;
       }>
     ) => {
       const { productId, size, color } = action.payload;
       const item = state.items.find((line) => line.productId === productId);
-      const product = getSneakerById(productId);
+      const product = getCatalogProduct(productId);
 
       if (!item || !product) return;
       if (size !== undefined && isSupportedSize(product, size))
@@ -96,7 +96,7 @@ const cartSlice = createSlice({
         item.color = color;
     },
 
-    toggleSelected: (state, action: PayloadAction<number>) => {
+    toggleSelected: (state, action: PayloadAction<string>) => {
       const item = state.items.find(
         (line) => line.productId === action.payload
       );

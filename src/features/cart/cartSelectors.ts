@@ -1,5 +1,5 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { getSneakerById, type SneakerProduct } from "./demoSneakers";
+import { getCatalogProduct, type CatalogProduct } from "../../catalog/catalog";
 import { roundMoney, shippingFor } from "./pricing";
 import type { CartItem, CartState, OrderTotals } from "./types";
 
@@ -9,9 +9,10 @@ export interface CartRootState {
 
 export interface CartLine {
   item: CartItem;
-  product: SneakerProduct;
-  size: number;
-  color: string;
+  product: CatalogProduct;
+  /** Undefined for products without size/colour variants. */
+  size: number | undefined;
+  color: string | undefined;
   selected: boolean;
   lineTotal: number;
 }
@@ -27,7 +28,7 @@ export const selectIsCartEmpty = createSelector([selectCartItems], (items) => it
 /** Cart items joined with catalog data. Items for unknown products are skipped. */
 export const selectCartLines = createSelector([selectCartItems], (items): CartLine[] =>
   items.flatMap((item) => {
-    const product = getSneakerById(item.productId);
+    const product = getCatalogProduct(item.productId);
     if (!product) return [];
     return [
       {
@@ -37,7 +38,7 @@ export const selectCartLines = createSelector([selectCartItems], (items): CartLi
         color:
           item.color !== undefined && product.colors.some((c) => c.name === item.color)
             ? item.color
-            : product.colors[0].name,
+            : product.colors[0]?.name,
         selected: item.selected !== false,
         lineTotal: roundMoney(product.price * item.quantity),
       },
