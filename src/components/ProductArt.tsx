@@ -4,6 +4,6 @@ export default function ProductArt({ product, className = '' }: { product: Produ
   return <div className={`product-art ${product.background} ${className}`}>
     <span className="art-orbit" aria-hidden="true" />
     <img src={product.image} alt={product.name} style={{ filter: product.artFilter }} loading="lazy" />
-    <span className="art-word" aria-hidden="true">KIXON</span>
+    <span className="art-word" aria-hidden="true">SOLEX</span>
   </div>;
 }

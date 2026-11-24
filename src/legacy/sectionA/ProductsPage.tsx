@@ -28,8 +28,8 @@ export default function ProductsPage() {
   function reset() { setSearch(''); setCategory('All'); setMaxPrice(MAX_PRICE); setSort('featured'); setGender('All'); }
 
   return <div className="page-shell container catalog-page">
-    <div className="page-topline"><span className="eyebrow">THE KIXON COLLECTION / 2026</span><span>BUILT DIFFERENT. WORN EVERYWHERE.</span></div>
-    <div className="catalog-title-row"><div><h1>FIND YOUR <em>FIT.</em></h1><p>The next obsession is one scroll away. Explore every KIXON silhouette.</p></div><span className="catalog-count">{visible.length.toString().padStart(2,'0')} <small>STYLES</small></span></div>
+    <div className="page-topline"><span className="eyebrow">THE SOLEX COLLECTION / 2026</span><span>BUILT DIFFERENT. WORN EVERYWHERE.</span></div>
+    <div className="catalog-title-row"><div><h1>FIND YOUR <em>FIT.</em></h1><p>The next obsession is one scroll away. Explore every SoleX silhouette.</p></div><span className="catalog-count">{visible.length.toString().padStart(2,'0')} <small>STYLES</small></span></div>
     <div className="gender-tabs" role="group" aria-label="Shop by gender">{genders.map((g) => <button key={g} type="button" className={g === selectedGender ? 'active' : ''} onClick={() => setGender(g)}>{g === 'All' ? 'All sneakers' : g}</button>)}</div>
     <div className="catalog-body">
       <aside className={`catalog-filters${filtersOpen ? ' filters-open' : ''}`} aria-label="Product filters">

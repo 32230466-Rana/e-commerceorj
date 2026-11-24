@@ -1,8 +1,32 @@
-# KIXON — Move Bold
+# SoleX — Move Bold
 
-A responsive **React + TypeScript** sneaker e-commerce concept for **men and women**, based on the Digital Hub team assignment and the supplied dark/light sneaker design reference. The store is named **KIXON**, using the logo the team provided.
+A responsive **React + TypeScript** sneaker e-commerce concept for **men and women**, based on the Digital Hub team assignment and the supplied dark/light sneaker design reference. The store is named **SoleX** (the Section_A branch originally used the name KIXON).
 
-> **Educational frontend demo.** All products, prices, order confirmations, and shipping policies are illustrative. No real payments, orders, customer storage, or deliveries. The demo email `hello@kixon.example` is not a functioning business contact.
+> **Educational frontend demo.** All products, prices, order confirmations, and shipping policies are illustrative. No real payments, orders, customer storage, or deliveries. The demo email `hello@solex.example` is not a functioning business contact.
+
+## Integrated SoleX app (branch `integration/solex`)
+
+This branch combines the three developers' branches into one site. Each page keeps its
+original owner's design:
+
+| Route | Owner | Source |
+| --- | --- | --- |
+| `/` Home, Navbar, Footer, `/about`, 404, light/dark theme | Developer A (Section_A) | `src/pages/HomePage.tsx`, `src/components/Header.tsx`, `src/components/Footer.tsx`, `src/styles.css` |
+| `/products` (filters, search, sort, cards, wishlist drawer) | Developer B (products) | `src/pages/ProductsPage.tsx`, `src/components/Product*.tsx`, `src/components/WishlistDrawer.tsx`, `src/styles/*.css` |
+| `/wishlist` | Section_A page, shared wishlist | `src/pages/WishlistPage.tsx` |
+| `/cart`, `/checkout`, `/order-confirmation` | Developer C (dev) | `src/features/cart/**` |
+
+Shared pieces:
+
+- **One Redux store** (`src/features/cart/cartStore.ts`) holds `cart`, `order` and `wishlist`.
+  Section A's `useStore()` hook (`src/app/StoreContext.tsx`) keeps its API but reads/writes Redux,
+  so the Navbar counters, Home, Products and Cart always agree. The theme stays in React context.
+- **One catalog** (`src/catalog/catalog.ts`) adapts each developer's original product file
+  (`src/features/cart/demoSneakers.ts`, `src/seed/productsSeed.ts`, `src/data/products.ts`)
+  without changing their ids, prices or images, so any product can be added to the same cart.
+- Saved data from the old branches (`solex:cart:v1` with numeric ids, `kixon-cart`,
+  `kixon-wishlist`, `kixon_wishlist`, `kixon-theme`) is migrated automatically on first load.
+- Section A's duplicate Products/Cart/Checkout pages are preserved, unrouted, in `src/legacy/sectionA/`.
 
 ## Run locally
 
@@ -44,7 +68,7 @@ npm run typecheck  # Check TypeScript
 
 **Developer A (your assigned section)**
 - Project scaffolding/configuration, routing, data model, shared context and localStorage
-- KIXON branding, the exact supplied wordmark image, site-wide styles, responsive navigation + footer
+- Site branding (now SoleX; originally the KIXON wordmark image), site-wide styles, responsive navigation + footer
 - Landing page including dual-mode hero, featured products, categories and brand story
 - This README + coordination for shared interfaces
 
@@ -67,7 +91,7 @@ Example:
 ```bash
 git init
 git add .
-git commit -m "chore: scaffold KIXON React TypeScript store"
+git commit -m "chore: scaffold SoleX React TypeScript store"
 git branch -M main
 git branch dev
 git checkout dev
@@ -77,14 +101,14 @@ git checkout -b feature/section-a-home
 
 ## Product art / design disclaimer
 
-- `public/assets/kixon-logo.png` was extracted from the supplied KIXON wordmark reference.
-- Sneaker art is derived from the earlier custom-made KIXON concept/mockup in this conversation. Different colorways use **CSS filter variations of two concept illustrations**. These are visual placeholders, not accurate photographs of eight distinct manufactured products. Replace with verified, licensed product photographs before any real storefront deployment.
+- `public/assets/kixon-logo.png` was extracted from the original KIXON wordmark reference. The integrated SoleX site uses a text wordmark instead; the image is kept for reference.
+- Sneaker art is derived from the earlier custom-made concept/mockup in this conversation. Different colorways use **CSS filter variations of two concept illustrations**. These are visual placeholders, not accurate photographs of eight distinct manufactured products. Replace with verified, licensed product photographs before any real storefront deployment.
 - All sample item names, prices and claims are fictional. Sales statistics from the reference image were intentionally **not** portrayed as real business metrics.
 - Google Fonts use an online font CDN; the site falls back to system fonts when offline. Product images themselves are bundled locally.
 
 ## Integration notes
 
-- `Product` type in `src/data/products.ts` and `StoreContextType` in `src/app/StoreContext.tsx` are the interfaces shared across the team.
+- `CatalogProduct` in `src/catalog/catalog.ts` and `StoreContextType` in `src/app/StoreContext.tsx` are the interfaces shared across the team.
 - **No need to recreate the global state or duplicate `localStorage` keys** in teammate modules.
 - Keep all page routes registered in `src/app/App.tsx`.
 - Tests are included but must be executed on a machine with `npm install` completed before the team claims they pass.

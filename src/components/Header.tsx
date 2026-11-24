@@ -14,8 +14,8 @@ export default function Header() {
     <div className="announcement">NEW SEASON / NEW ENERGY <span>—</span> FREE SHIPPING ON ORDERS OVER $180 <ArrowUpRight size={12}/></div>
     <header className="site-header">
       <div className="header-inner container">
-        <Link to="/" className="brand" onClick={close} aria-label="KIXON home">
-          <img src="/assets/kixon-logo.png" alt="KIXON" />
+        <Link to="/" className="brand" onClick={close} aria-label="SoleX home">
+          <span className="brand-wordmark">SOLE<span>X</span></span>
         </Link>
         <nav className={menuOpen ? 'nav-links open' : 'nav-links'} aria-label="Main navigation">
           <NavLink to="/" end className={navClass} onClick={close}>Home</NavLink>

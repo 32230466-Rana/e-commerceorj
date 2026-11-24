@@ -32,7 +32,7 @@ export const MobileNavDrawer: FC<MobileNavDrawerProps> = ({
       >
         <div className="mobile-nav-header">
           <div className="mobile-nav-logo">
-            KIX<span className="mobile-nav-logo-accent">ON</span>
+            Sole<span className="mobile-nav-logo-accent">X</span>
           </div>
           <button
             type="button"

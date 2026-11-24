@@ -1,5 +1,5 @@
 /* ================================================================
-   KIXON / GLOBAL DESIGN SYSTEM
+   SOLEX / GLOBAL DESIGN SYSTEM (Section A)
    SECTION A owns shared layout, header/footer, homepage and themes.
    Developers B/C can extend their page-scoped styles below.
    ================================================================ */
@@ -52,6 +52,10 @@ button:disabled { cursor: not-allowed; opacity: .45; }
 .header-inner { min-height: 91px; display: flex; justify-content: space-between; align-items: center; gap: 25px; }
 .brand { display: inline-flex; align-items: center; min-width: 140px; position: relative; }
 .brand img { width: 115px; height: 50px; object-fit: contain; }
+/* Integration: SoleX text wordmark replaces the KIXON logo image (same slot and proportions). */
+.brand-wordmark { font-family: 'DM Sans', Arial, sans-serif; font-size: 27px; font-weight: 700; letter-spacing: .04em; line-height: 1; color: var(--text); }
+.brand-wordmark span { color: var(--accent); }
+.brand-wordmark--footer { display: inline-block; font-size: 30px; margin: 10px 0 6px; }
 .brand-dot { font-size: 30px; font-weight: 800; line-height: 1; margin-left: -5px; margin-top: 15px; color: var(--accent); }
 :root[data-theme="dark"] .brand img, :root[data-theme="dark"] .footer-brand img { filter: invert(1) brightness(1.5); }
 .nav-links { display: flex; align-items: center; gap: clamp(18px, 2.7vw, 44px); }

@@ -3,7 +3,7 @@ import type { Product } from '../types/product';
 export const initialProductsSeed: Product[] = [
   {
     id: 'kxn-01',
-    name: 'Kixon Ultra Chunky Runner',
+    name: 'SoleX Ultra Chunky Runner',
     price: 189.99,
     category: 'Lifestyle',
     imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
