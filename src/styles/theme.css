@@ -27,27 +27,39 @@
   box-sizing: border-box;
 }
 
-html, body {
-  overflow-x: hidden;
-  max-width: 100vw;
-}
-
-body {
-  margin: 0;
-  padding: 0;
-  background-color: var(--color-bg-primary);
+/* Integration: these were html/body rules on the products branch. Section A owns the
+   site-wide body styles (and dark mode), so Developer B's page applies them to its own
+   container — the Products page looks exactly as before and is unaffected by dark mode. */
+.products-page-container,
+.product-card.devb-card,
+.wishlist-overlay {
   color: var(--color-text-dark);
   font-family: var(--font-family-body);
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+  color-scheme: light;
 }
 
-button {
+.products-page-container {
+  overflow-x: clip;
+  max-width: 100vw;
+}
+
+.products-page-container button,
+.wishlist-overlay button,
+.product-card.devb-card button {
   font-family: inherit;
   cursor: pointer;
   touch-action: manipulation;
 }
 
-input, select {
+/* Section A's global `button:disabled { opacity: .45 }` must not restyle Developer B's controls. */
+.products-page-container button:disabled,
+.wishlist-overlay button:disabled {
+  opacity: 1;
+}
+
+.products-page-container input,
+.products-page-container select {
   font-family: inherit;
 }

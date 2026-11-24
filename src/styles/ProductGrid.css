@@ -1,4 +1,4 @@
-.product-grid {
+.product-grid.devb-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
   gap: 24px;
@@ -46,7 +46,7 @@
 
 /* Tablet */
 @media (max-width: 900px) {
-  .product-grid {
+  .product-grid.devb-grid {
     grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
     gap: 18px;
   }
@@ -54,7 +54,7 @@
 
 /* Mobile (<= 640px) */
 @media (max-width: 640px) {
-  .product-grid {
+  .product-grid.devb-grid {
     grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
     gap: 14px;
   }
@@ -80,7 +80,7 @@
 
 /* Extra small mobile (<= 360px) */
 @media (max-width: 360px) {
-  .product-grid {
+  .product-grid.devb-grid {
     grid-template-columns: 1fr;
     gap: 16px;
   }

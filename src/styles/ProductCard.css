@@ -1,4 +1,4 @@
-.product-card {
+.product-card.devb-card {
   display: flex;
   flex-direction: column;
   background-color: var(--color-bg-card);
@@ -10,7 +10,7 @@
   width: 100%;
 }
 
-.product-card:hover {
+.product-card.devb-card:hover {
   transform: translateY(-4px);
   box-shadow: var(--shadow-md);
   border-color: var(--color-border-hover);
@@ -34,7 +34,7 @@
   transition: transform var(--transition-normal);
 }
 
-.product-card:hover .product-card-image {
+.product-card.devb-card:hover .product-card-image {
   transform: scale(1.05);
 }
 

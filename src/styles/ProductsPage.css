@@ -6,6 +6,13 @@
   width: 100%;
 }
 
+/* Integration: the header is now a toolbar holding only the wishlist button. */
+.kixon-header.kixon-header--toolbar {
+  justify-content: flex-end;
+  padding-top: 14px;
+  padding-bottom: 14px;
+}
+
 /* KIXON Header */
 .kixon-header {
   display: flex;

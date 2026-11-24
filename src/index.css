@@ -3,15 +3,8 @@
 /* Developer C (cart): fonts used by the cart/checkout pages */
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,500;0,600;0,700;0,800;1,800&family=DM+Sans:wght@400;500;600;700&display=swap');
 
-:root {
-  font-family: 'DM Sans', 'Segoe UI', Arial, sans-serif;
-  color: #14151b;
-  background: #e9edf3;
-  font-synthesis: none;
-  text-rendering: optimizeLegibility;
-  -webkit-font-smoothing: antialiased;
-  -moz-osx-font-smoothing: grayscale;
-}
+/* Developer C's :root font/colour now live on .sx-app (CartPage.css); Section A's styles.css
+   owns the site-wide :root, body and dark-mode variables. */
 
 * { box-sizing: border-box; }
 html { min-width: 320px; min-height: 100%; }
