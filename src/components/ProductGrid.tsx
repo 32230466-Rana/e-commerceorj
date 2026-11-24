@@ -7,12 +7,14 @@ interface ProductGridProps {
   products: Product[];
   wishlistIds?: string[];
   onToggleWishlist?: (product: Product) => void;
+  onSelectProduct?: (product: Product) => void;
 }
 
 export const ProductGrid: FC<ProductGridProps> = ({
   products,
   wishlistIds = [],
   onToggleWishlist,
+  onSelectProduct,
 }) => {
   if (products.length === 0) {
     return (
@@ -46,6 +48,7 @@ export const ProductGrid: FC<ProductGridProps> = ({
           product={product}
           isInWishlist={wishlistIds.includes(product.id)}
           onToggleWishlist={onToggleWishlist}
+          onSelectProduct={onSelectProduct}
         />
       ))}
     </div>

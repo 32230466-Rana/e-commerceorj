@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import type { FC, MouseEvent } from 'react';
 import type { Product } from '../types/product';
 import '../styles/ProductCard.css';
 
@@ -6,21 +6,41 @@ interface ProductCardProps {
   product: Product;
   isInWishlist?: boolean;
   onToggleWishlist?: (product: Product) => void;
+  onSelectProduct?: (product: Product) => void;
 }
 
 export const ProductCard: FC<ProductCardProps> = ({
   product,
   isInWishlist = false,
   onToggleWishlist,
+  onSelectProduct,
 }) => {
-  const handleWishlistClick = () => {
+  const handleWishlistClick = (e: MouseEvent<HTMLButtonElement>) => {
+    e.stopPropagation();
     if (onToggleWishlist) {
       onToggleWishlist(product);
     }
   };
 
+  const handleCardClick = () => {
+    if (onSelectProduct) {
+      onSelectProduct(product);
+    }
+  };
+
   return (
-    <article className="product-card">
+    <article
+      className="product-card"
+      onClick={handleCardClick}
+      tabIndex={0}
+      role="button"
+      aria-label={`View details for ${product.name}`}
+      onKeyDown={(e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          handleCardClick();
+        }
+      }}
+    >
       <div className="product-card-image-wrapper">
         <span className="product-card-category-badge">{product.category}</span>
         <button
@@ -60,9 +80,13 @@ export const ProductCard: FC<ProductCardProps> = ({
           <button
             type="button"
             className="product-card-add-cart-btn"
-            aria-label="Add to Cart"
+            aria-label="Choose options"
+            onClick={(e) => {
+              e.stopPropagation();
+              handleCardClick();
+            }}
           >
-            Add to Cart
+            Select Options
           </button>
         </div>
       </div>

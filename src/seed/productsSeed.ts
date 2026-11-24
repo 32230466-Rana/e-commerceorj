@@ -7,6 +7,12 @@ export const initialProductsSeed: Product[] = [
     price: 189.99,
     category: 'Lifestyle',
     imageUrl: 'https://images.unsplash.com/photo-1542291026-7eec264c27ff?auto=format&fit=crop&w=800&q=80',
+    sizes: [38, 39, 40, 41, 42, 43, 44, 45],
+    colors: [
+      { name: 'Infrared Crimson', className: 'swatch-crimson' },
+      { name: 'Obsidian Black', className: 'swatch-black' },
+      { name: 'Ghost White', className: 'swatch-white' },
+    ],
   },
   {
     id: 'kxn-02',
@@ -14,6 +20,12 @@ export const initialProductsSeed: Product[] = [
     price: 215.00,
     category: 'Running',
     imageUrl: 'https://images.unsplash.com/photo-1551107696-a4b0c5a0d9a2?auto=format&fit=crop&w=800&q=80',
+    sizes: [39, 40, 41, 42, 43, 44],
+    colors: [
+      { name: 'Kixon Magenta', className: 'swatch-magenta' },
+      { name: 'Solar Lime', className: 'swatch-lime' },
+      { name: 'Pure Platinum', className: 'swatch-white' },
+    ],
   },
   {
     id: 'kxn-03',
@@ -21,6 +33,12 @@ export const initialProductsSeed: Product[] = [
     price: 95.00,
     category: 'Skate',
     imageUrl: 'https://images.unsplash.com/photo-1525966222134-fcfa99b8ae77?auto=format&fit=crop&w=800&q=80',
+    sizes: [38, 39, 40, 41, 42, 43, 44],
+    colors: [
+      { name: 'Burgundy Wine', className: 'swatch-burgundy' },
+      { name: 'Vintage Black', className: 'swatch-black' },
+      { name: 'Warm Cream', className: 'swatch-cream' },
+    ],
   },
   {
     id: 'kxn-04',
@@ -28,6 +46,12 @@ export const initialProductsSeed: Product[] = [
     price: 240.00,
     category: 'Basketball',
     imageUrl: 'https://images.unsplash.com/photo-1515955656352-a1fa3ffcd111?auto=format&fit=crop&w=800&q=80',
+    sizes: [40, 41, 42, 43, 44, 45, 46],
+    colors: [
+      { name: 'Deep Royal', className: 'swatch-blue' },
+      { name: 'Shadow Charcoal', className: 'swatch-charcoal' },
+      { name: 'Electric Orange', className: 'swatch-orange' },
+    ],
   },
   {
     id: 'kxn-05',
@@ -35,6 +59,12 @@ export const initialProductsSeed: Product[] = [
     price: 135.50,
     category: 'Lifestyle',
     imageUrl: 'https://images.unsplash.com/photo-1606107557195-0e29a4b5b4aa?auto=format&fit=crop&w=800&q=80',
+    sizes: [38, 39, 40, 41, 42, 43, 44, 45],
+    colors: [
+      { name: 'Volt Green', className: 'swatch-green' },
+      { name: 'Matte Black', className: 'swatch-black' },
+      { name: 'Chalk White', className: 'swatch-white' },
+    ],
   },
   {
     id: 'kxn-06',
@@ -42,6 +72,12 @@ export const initialProductsSeed: Product[] = [
     price: 175.00,
     category: 'Running',
     imageUrl: 'https://images.unsplash.com/photo-1608231387042-66d1773070a5?auto=format&fit=crop&w=800&q=80',
+    sizes: [39, 40, 41, 42, 43, 44],
+    colors: [
+      { name: 'Amber Blaze', className: 'swatch-orange' },
+      { name: 'Smoke Grey', className: 'swatch-charcoal' },
+      { name: 'Arctic Ice', className: 'swatch-ice' },
+    ],
   },
   {
     id: 'kxn-07',
@@ -49,6 +85,12 @@ export const initialProductsSeed: Product[] = [
     price: 160.00,
     category: 'Skate',
     imageUrl: 'https://images.unsplash.com/photo-1595950653106-6c9ebd614d3a?auto=format&fit=crop&w=800&q=80',
+    sizes: [38, 39, 40, 41, 42, 43, 44],
+    colors: [
+      { name: 'Pastel Lilac', className: 'swatch-lilac' },
+      { name: 'Sand Drift', className: 'swatch-sand' },
+      { name: 'Nightfall', className: 'swatch-black' },
+    ],
   },
   {
     id: 'kxn-08',
@@ -56,5 +98,11 @@ export const initialProductsSeed: Product[] = [
     price: 220.00,
     category: 'Basketball',
     imageUrl: 'https://images.unsplash.com/photo-1579338559194-a162d19bf842?auto=format&fit=crop&w=800&q=80',
+    sizes: [41, 42, 43, 44, 45, 46],
+    colors: [
+      { name: 'Cobalt Pulse', className: 'swatch-blue' },
+      { name: 'Stealth Black', className: 'swatch-black' },
+      { name: 'Pure Crimson', className: 'swatch-crimson' },
+    ],
   },
 ];

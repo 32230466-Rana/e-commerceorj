@@ -6,6 +6,7 @@ import { ProductFilters } from '../components/ProductFilters';
 import { ProductGrid } from '../components/ProductGrid';
 import { WishlistDrawer } from '../components/WishlistDrawer';
 import { MobileNavDrawer } from '../components/MobileNavDrawer';
+import { ProductModal } from '../components/ProductModal';
 import '../styles/ProductsPage.css';
 
 const WISHLIST_STORAGE_KEY = 'kixon_wishlist';
@@ -30,6 +31,7 @@ export const ProductsPage: FC = () => {
 
   const [isWishlistOpen, setIsWishlistOpen] = useState<boolean>(false);
   const [isMobileNavOpen, setIsMobileNavOpen] = useState<boolean>(false);
+  const [selectedProduct, setSelectedProduct] = useState<Product | null>(null);
 
   // Persist Wishlist in localStorage
   useEffect(() => {
@@ -214,6 +216,7 @@ export const ProductsPage: FC = () => {
           products={filteredProducts}
           wishlistIds={wishlistIds}
           onToggleWishlist={handleToggleWishlist}
+          onSelectProduct={(product) => setSelectedProduct(product)}
         />
       </main>
 
@@ -231,6 +234,15 @@ export const ProductsPage: FC = () => {
         isOpen={isMobileNavOpen}
         onClose={() => setIsMobileNavOpen(false)}
         activePage="Products"
+      />
+
+      {/* Product Details & Selection Modal */}
+      <ProductModal
+        product={selectedProduct}
+        isOpen={selectedProduct !== null}
+        onClose={() => setSelectedProduct(null)}
+        isInWishlist={selectedProduct ? wishlistIds.includes(selectedProduct.id) : false}
+        onToggleWishlist={handleToggleWishlist}
       />
     </div>
   );
