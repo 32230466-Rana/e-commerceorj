@@ -1,6 +1,9 @@
-import { expect, test } from "@playwright/test";
+import { expect, test, type Page } from "@playwright/test";
 
 const CART_KEY = "solex:cart:v1";
+
+/** Cart counter in the shared (Section A) site header. It is hidden when the cart is empty. */
+const cartBadge = (page: Page) => page.locator(".site-header a[href='/cart'] .icon-count");
 
 test.beforeEach(async ({ page }) => {
   await page.goto("/cart");
@@ -16,11 +19,11 @@ test("recommendation button updates Redux, badge, feedback, and persisted cart",
   const recommendation = page.getByTestId("product-recommendation").filter({ hasText: "Nike Air Jordan 1" });
   const addButton = recommendation.getByTestId("add-to-cart-button");
   await expect(addButton).toHaveText("Add to Cart");
-  await expect(page.locator(".sx-icon-btn--cart b")).toHaveCount(0);
+  await expect(cartBadge(page)).toHaveCount(0);
 
   await addButton.click();
   await expect(addButton).toHaveText("Added to Bag");
-  await expect(page.locator(".sx-icon-btn--cart b")).toHaveText("1");
+  await expect(cartBadge(page)).toHaveText("1");
   await expect(page.getByTestId("cart-item")).toHaveCount(1);
   await expect(page.getByTestId("cart-item").locator("output")).toHaveText("1");
   await expect(recommendation.getByTestId("add-to-cart-button")).toBeDisabled();
@@ -29,12 +32,12 @@ test("recommendation button updates Redux, badge, feedback, and persisted cart",
   await expect(addButton).toHaveText("Add Another", { timeout: 2500 });
   await addButton.click();
   await expect(addButton).toHaveText("Added to Bag");
-  await expect(page.locator(".sx-icon-btn--cart b")).toHaveText("2");
+  await expect(cartBadge(page)).toHaveText("2");
   await expect(page.getByTestId("cart-item").locator("output")).toHaveText("2");
 
   await page.reload();
   const persistedRecommendation = page.getByTestId("product-recommendation").filter({ hasText: "Nike Air Jordan 1" });
-  await expect(page.locator(".sx-icon-btn--cart b")).toHaveText("2");
+  await expect(cartBadge(page)).toHaveText("2");
   await expect(page.getByTestId("cart-item").locator("output")).toHaveText("2");
   await expect(persistedRecommendation.getByTestId("add-to-cart-button")).toHaveText("Add Another");
   expect(await page.evaluate((key) => localStorage.getItem(key), CART_KEY)).not.toBeNull();

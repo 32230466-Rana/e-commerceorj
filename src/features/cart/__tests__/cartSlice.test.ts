@@ -104,3 +104,63 @@ describe("selectors", () => {
     expect(lines[0]).toMatchObject({ size: 40, color: "Red", selected: true });
   });
 });
+
+describe("cartSlice — invalid inputs and no-ops", () => {
+  it("addItem ignores zero, negative, fractional and unsafe quantities", () => {
+    for (const quantity of [0, -1, 1.5, Number.NaN, Number.POSITIVE_INFINITY]) {
+      expect(reducer(start(), addItem({ productId: "3", quantity }))).toEqual(start());
+    }
+  });
+
+  it("addItem caps a brand-new line at the limit and falls back to supported variants", () => {
+    const state = reducer({ items: [] }, addItem({ productId: "1", quantity: 99, size: 47, color: "Purple" }));
+    expect(state.items[0]).toMatchObject({ productId: "1", quantity: MAX_LINE_QUANTITY, size: 40, color: "Red" });
+  });
+
+  it("addItem keeps a requested supported variant and re-selects an existing line", () => {
+    let state = reducer({ items: [] }, addItem({ productId: "1", size: 43, color: "Black" }));
+    expect(state.items[0]).toMatchObject({ size: 43, color: "Black" });
+    state = reducer(state, toggleSelected("1"));
+    state = reducer(state, addItem({ productId: "1" }));
+    expect(state.items[0]).toMatchObject({ quantity: 2, selected: true });
+  });
+
+  it("updateQuantity accepts the limit itself and ignores unknown lines", () => {
+    expect(reducer(start(), updateQuantity({ productId: "1", quantity: MAX_LINE_QUANTITY })).items[0].quantity).toBe(MAX_LINE_QUANTITY);
+    expect(reducer(start(), updateQuantity({ productId: "kxn-01", quantity: 2 }))).toEqual(start());
+    expect(reducer(start(), updateQuantity({ productId: "1", quantity: -3 }))).toEqual(start());
+  });
+
+  it("updateVariant ignores lines that are not in the cart", () => {
+    expect(reducer(start(), updateVariant({ productId: "3", size: 41 }))).toEqual(start());
+  });
+
+  it("removeItem and toggleSelected ignore unknown ids", () => {
+    expect(reducer(start(), removeItem("does-not-exist"))).toEqual(start());
+    expect(reducer(start(), toggleSelected("does-not-exist"))).toEqual(start());
+  });
+
+  it("toggleSelected treats a missing flag as selected", () => {
+    const state = reducer({ items: [{ productId: "1", quantity: 1 }] }, toggleSelected("1"));
+    expect(state.items[0].selected).toBe(false);
+  });
+
+  it("setAllSelected(false) deselects everything and removeSelected then keeps every line", () => {
+    const state = reducer(start(), setAllSelected(false));
+    expect(state.items.every((item) => item.selected === false)).toBe(true);
+    expect(reducer(state, removeSelected()).items).toHaveLength(2);
+    expect(reducer(start(), removeSelected()).items).toEqual([]);
+  });
+
+  it("orderPlaced keeps lines that were not part of the order", () => {
+    const order: Order = {
+      id: "SX-2",
+      createdAt: new Date(0).toISOString(),
+      lines: [{ productId: "kxn-03", name: "Retro Skate Classic Low", image: "", unitPrice: 95, quantity: 1 }],
+      totals: { itemCount: 1, subtotal: 95, shipping: 8, total: 103 },
+      customer: { fullName: "A B", email: "a@b.co", city: "Beirut" },
+    };
+    const withSkate = reducer(start(), addItem({ productId: "kxn-03" }));
+    expect(reducer(withSkate, orderPlaced(order)).items).toEqual(start().items);
+  });
+});
