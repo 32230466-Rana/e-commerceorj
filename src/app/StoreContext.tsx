@@ -1,7 +1,19 @@
-/** SECTION A — Shared context + persistence; used by every page and teammate. */
+/**
+ * SECTION A — Shared store hook used by the Navbar, Home, product cards and Wishlist page.
+ *
+ * Integration: the public API (`useStore()`) is unchanged, but cart and wishlist now
+ * come from the single Redux store (src/features/cart/cartStore.ts), so the Navbar
+ * counters, Home, Products and the Cart page all see the same data. Only the
+ * light/dark theme still lives in this context.
+ */
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
-import { addCartItem, getCartCount, getCartSubtotal, setCartItemQuantity, type CartItem } from '../lib/cart';
-import { getProduct } from '../data/products';
+import { useDispatch, useSelector } from 'react-redux';
+import type { CartItem } from '../lib/cart';
+import { MAX_LINE_QUANTITY } from '../features/cart/cartSchema';
+import { addItem, clearCart, removeItem, updateQuantity } from '../features/cart/cartSlice';
+import { selectCartCount, selectCartLines, selectCartItems } from '../features/cart/cartSelectors';
+import type { CartDispatch, CartRootState } from '../features/cart/cartStore';
+import { selectWishlistIds, toggleWishlist } from '../features/wishlist/wishlistSlice';
 
 type Theme = 'light' | 'dark';
 
@@ -20,60 +32,67 @@ interface StoreContextType {
   isWishlisted: (id: string) => boolean;
 }
 
-const StoreContext = createContext<StoreContextType | undefined>(undefined);
+interface ThemeContextType {
+  theme: Theme;
+  toggleTheme: () => void;
+}
 
-function readStored<T>(key: string, fallback: T): T {
+const THEME_KEY = 'solex-theme';
+const LEGACY_THEME_KEY = 'kixon-theme';
+
+const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
+
+function readTheme(): Theme {
   try {
-    const value = window.localStorage.getItem(key);
-    return value ? (JSON.parse(value) as T) : fallback;
+    const value = window.localStorage.getItem(THEME_KEY) ?? window.localStorage.getItem(LEGACY_THEME_KEY);
+    const parsed = value ? JSON.parse(value) : 'light';
+    return parsed === 'dark' ? 'dark' : 'light';
   } catch {
-    return fallback;
+    return 'light';
   }
 }
 
 export function StoreProvider({ children }: { children: ReactNode }) {
-  const [theme, setTheme] = useState<Theme>(() => readStored<Theme>('kixon-theme', 'light'));
-  const [cart, setCart] = useState<CartItem[]>(() => {
-    const saved = readStored<unknown>('kixon-cart', []);
-    if (!Array.isArray(saved)) return [];
-    return saved.filter((item): item is CartItem =>
-      item != null && typeof item === 'object' &&
-      'productId' in item && typeof item.productId === 'string' && Boolean(getProduct(item.productId)) &&
-      'quantity' in item && typeof item.quantity === 'number' && Number.isInteger(item.quantity) && item.quantity >= 1 && item.quantity <= 99
-    );
-  });
-  const [wishlist, setWishlist] = useState<string[]>(() => {
-    const saved = readStored<unknown>('kixon-wishlist', []);
-    return Array.isArray(saved) ? [...new Set(saved.filter((id): id is string => typeof id === 'string' && Boolean(getProduct(id))))] : [];
-  });
+  const [theme, setTheme] = useState<Theme>(readTheme);
 
-  useEffect(() => { document.documentElement.dataset.theme = theme; localStorage.setItem('kixon-theme', JSON.stringify(theme)); }, [theme]);
-  useEffect(() => { localStorage.setItem('kixon-cart', JSON.stringify(cart)); }, [cart]);
-  useEffect(() => { localStorage.setItem('kixon-wishlist', JSON.stringify(wishlist)); }, [wishlist]);
+  useEffect(() => {
+    document.documentElement.dataset.theme = theme;
+    try { localStorage.setItem(THEME_KEY, JSON.stringify(theme)); } catch { /* storage unavailable */ }
+  }, [theme]);
 
-  const value = useMemo<StoreContextType>(() => ({
+  const value = useMemo<ThemeContextType>(() => ({
     theme,
     toggleTheme: () => setTheme((current) => current === 'dark' ? 'light' : 'dark'),
-    cart,
-    cartCount: getCartCount(cart),
-    subtotal: getCartSubtotal(cart),
-    addToCart: (id) => setCart((current) => addCartItem(current, id)),
-    changeQuantity: (id, qty) => setCart((current) => setCartItemQuantity(current, id, qty)),
-    removeFromCart: (id) => setCart((current) => current.filter((item) => item.productId !== id)),
-    clearCart: () => setCart([]),
-    wishlist,
-    toggleWishlist: (id) => {
-      if (!getProduct(id)) return;
-      setWishlist((current) => current.includes(id) ? current.filter((item) => item !== id) : [...current, id]);
-    },
-    isWishlisted: (id) => wishlist.includes(id),
-  }), [theme, cart, wishlist]);
+  }), [theme]);
 
-  return <StoreContext.Provider value={value}>{children}</StoreContext.Provider>;
+  return <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>;
 }
 
 export function useStore(): StoreContextType {
-  const store = useContext(StoreContext);
-  if (!store) throw new Error('useStore must be called inside StoreProvider');
-  return store;
+  const themeContext = useContext(ThemeContext);
+  if (!themeContext) throw new Error('useStore must be called inside StoreProvider');
+
+  const dispatch = useDispatch<CartDispatch>();
+  const items = useSelector((state: CartRootState) => selectCartItems(state));
+  const lines = useSelector((state: CartRootState) => selectCartLines(state));
+  const cartCount = useSelector((state: CartRootState) => selectCartCount(state));
+  const wishlist = useSelector((state: CartRootState) => selectWishlistIds(state));
+
+  return useMemo<StoreContextType>(() => ({
+    ...themeContext,
+    cart: items.map(({ productId, quantity }) => ({ productId, quantity })),
+    cartCount,
+    subtotal: lines.reduce((sum, line) => sum + line.lineTotal, 0),
+    addToCart: (id) => dispatch(addItem({ productId: id })),
+    changeQuantity: (id, quantity) => {
+      if (!Number.isFinite(quantity) || quantity <= 0) dispatch(removeItem(id));
+      // Developer C's cart rule caps each line at MAX_LINE_QUANTITY (Section A allowed 99).
+      else dispatch(updateQuantity({ productId: id, quantity: Math.min(MAX_LINE_QUANTITY, Math.floor(quantity)) }));
+    },
+    removeFromCart: (id) => dispatch(removeItem(id)),
+    clearCart: () => dispatch(clearCart()),
+    wishlist,
+    toggleWishlist: (id) => dispatch(toggleWishlist(id)),
+    isWishlisted: (id) => wishlist.includes(id),
+  }), [themeContext, items, lines, cartCount, wishlist, dispatch]);
 }

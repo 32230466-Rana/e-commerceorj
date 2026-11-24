@@ -1,14 +1,16 @@
-import { useState, useMemo, useEffect } from 'react';
+import { useState, useMemo } from 'react';
 import type { FC } from 'react';
 import type { Product, SortOrder } from '../types/product';
 import { initialProductsSeed } from '../seed/productsSeed';
 import { ProductFilters } from '../components/ProductFilters';
 import { ProductGrid } from '../components/ProductGrid';
 import { WishlistDrawer } from '../components/WishlistDrawer';
-import { MobileNavDrawer } from '../components/MobileNavDrawer';
+import { useDispatch, useSelector } from 'react-redux';
+import type { CartDispatch, CartRootState } from '../features/cart/cartStore';
+import { addItem } from '../features/cart/cartSlice';
+import { clearWishlist, removeFromWishlist, selectWishlistIds, toggleWishlist } from '../features/wishlist/wishlistSlice';
+import { getCatalogProduct, toDevBProduct } from '../catalog/catalog';
 import '../styles/ProductsPage.css';
-
-const WISHLIST_STORAGE_KEY = 'kixon_wishlist';
 
 export const ProductsPage: FC = () => {
   const [products] = useState<Product[]>(initialProductsSeed);
@@ -18,48 +20,33 @@ export const ProductsPage: FC = () => {
   const [maxPrice, setMaxPrice] = useState<string>('');
   const [sortOrder, setSortOrder] = useState<SortOrder>('none');
 
-  // Wishlist State
-  const [wishlist, setWishlist] = useState<Product[]>(() => {
-    try {
-      const saved = localStorage.getItem(WISHLIST_STORAGE_KEY);
-      return saved ? JSON.parse(saved) : [];
-    } catch {
-      return [];
-    }
-  });
+  // Wishlist State — shared Redux wishlist (also used by the Navbar, Home and Wishlist page).
+  // Saved 'kixon_wishlist' data from this branch is imported once by wishlistStorage.ts.
+  const dispatch = useDispatch<CartDispatch>();
+  const wishlistIds = useSelector((state: CartRootState) => selectWishlistIds(state));
+  const wishlist = useMemo<Product[]>(
+    () => wishlistIds.flatMap((id) => {
+      const product = getCatalogProduct(id);
+      return product ? [toDevBProduct(product)] : [];
+    }),
+    [wishlistIds]
+  );
 
   const [isWishlistOpen, setIsWishlistOpen] = useState<boolean>(false);
-  const [isMobileNavOpen, setIsMobileNavOpen] = useState<boolean>(false);
-
-  // Persist Wishlist in localStorage
-  useEffect(() => {
-    try {
-      localStorage.setItem(WISHLIST_STORAGE_KEY, JSON.stringify(wishlist));
-    } catch {
-      // Ignore storage write issues
-    }
-  }, [wishlist]);
-
-  const wishlistIds = useMemo(() => {
-    return wishlist.map((item) => item.id);
-  }, [wishlist]);
-
   const handleToggleWishlist = (product: Product) => {
-    setWishlist((prev) => {
-      const exists = prev.some((item) => item.id === product.id);
-      if (exists) {
-        return prev.filter((item) => item.id !== product.id);
-      }
-      return [...prev, product];
-    });
+    dispatch(toggleWishlist(product.id));
   };
 
   const handleRemoveFromWishlist = (productId: string) => {
-    setWishlist((prev) => prev.filter((item) => item.id !== productId));
+    dispatch(removeFromWishlist(productId));
   };
 
   const handleClearWishlist = () => {
-    setWishlist([]);
+    dispatch(clearWishlist());
+  };
+
+  const handleAddToCart = (product: Product) => {
+    dispatch(addItem({ productId: product.id }));
   };
 
   const categories = useMemo(() => {
@@ -118,19 +105,9 @@ export const ProductsPage: FC = () => {
 
   return (
     <div className="products-page-container">
-      {/* KIXON Header */}
-      <header className="kixon-header">
-        <div className="kixon-logo">
-          KIX<span className="kixon-logo-accent">ON</span>
-        </div>
-
-        <nav className="kixon-nav">
-          <span className="kixon-nav-link">Home</span>
-          <span className="kixon-nav-link">About</span>
-          <span className="kixon-nav-link kixon-nav-link-active">Products</span>
-          <span className="kixon-nav-link">Contact</span>
-        </nav>
-
+      {/* Developer B toolbar (sticky). The site-wide Navbar (Section A) now provides the logo,
+          page links and mobile menu, so they are not repeated here. */}
+      <header className="kixon-header kixon-header--toolbar">
         <div className="kixon-header-actions">
           <button
             type="button"
@@ -153,27 +130,6 @@ export const ProductsPage: FC = () => {
             {wishlist.length > 0 && (
               <span className="kixon-wishlist-badge">{wishlist.length}</span>
             )}
-          </button>
-
-          <button
-            type="button"
-            className="kixon-burger-btn"
-            onClick={() => setIsMobileNavOpen(true)}
-            aria-label="Open navigation menu"
-          >
-            <svg
-              className="kixon-burger-icon"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <line x1="3" y1="6" x2="21" y2="6" />
-              <line x1="3" y1="12" x2="21" y2="12" />
-              <line x1="3" y1="18" x2="21" y2="18" />
-            </svg>
           </button>
         </div>
       </header>
@@ -214,6 +170,7 @@ export const ProductsPage: FC = () => {
           products={filteredProducts}
           wishlistIds={wishlistIds}
           onToggleWishlist={handleToggleWishlist}
+          onAddToCart={handleAddToCart}
         />
       </main>
 
@@ -226,12 +183,7 @@ export const ProductsPage: FC = () => {
         onClearWishlist={handleClearWishlist}
       />
 
-      {/* Mobile Navigation Drawer */}
-      <MobileNavDrawer
-        isOpen={isMobileNavOpen}
-        onClose={() => setIsMobileNavOpen(false)}
-        activePage="Products"
-      />
+      {/* Mobile navigation is provided by the site-wide Navbar (MobileNavDrawer kept in src/components). */}
     </div>
   );
 };

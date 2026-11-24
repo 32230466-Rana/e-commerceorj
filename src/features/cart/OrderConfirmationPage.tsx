@@ -13,7 +13,7 @@ export default function OrderConfirmationPage() {
 
   return (
     <PageShell>
-      <main className="sx-page sx-confirm" id="main">
+      <div className="sx-page sx-confirm" id="main">
         <div className="sx-cart__head">
           <div className="sx-title">
             <span className="sx-title__icon sx-title__icon--ok">
@@ -45,7 +45,7 @@ export default function OrderConfirmationPage() {
                 <img src={line.image} alt="" />
                 <span>
                   <strong>{line.name}</strong>
-                  <small>Size {line.size} · {line.color} · Qty {line.quantity}</small>
+                  <small>{[line.size !== undefined ? `Size ${line.size}` : null, line.color, `Qty ${line.quantity}`].filter(Boolean).join(" · ")}</small>
                 </span>
                 <b>{formatMoney(line.unitPrice * line.quantity)}</b>
               </li>
@@ -64,7 +64,7 @@ export default function OrderConfirmationPage() {
             <ArrowLeftIcon size={18} /> <span>Back to cart</span>
           </Link>
         </section>
-      </main>
+      </div>
     </PageShell>
   );
 }

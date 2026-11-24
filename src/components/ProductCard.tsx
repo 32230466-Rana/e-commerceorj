@@ -6,12 +6,15 @@ interface ProductCardProps {
   product: Product;
   isInWishlist?: boolean;
   onToggleWishlist?: (product: Product) => void;
+  /** Integration: adds the product to the shared Redux cart. */
+  onAddToCart?: (product: Product) => void;
 }
 
 export const ProductCard: FC<ProductCardProps> = ({
   product,
   isInWishlist = false,
   onToggleWishlist,
+  onAddToCart,
 }) => {
   const handleWishlistClick = () => {
     if (onToggleWishlist) {
@@ -20,7 +23,7 @@ export const ProductCard: FC<ProductCardProps> = ({
   };
 
   return (
-    <article className="product-card">
+    <article className="product-card devb-card">
       <div className="product-card-image-wrapper">
         <span className="product-card-category-badge">{product.category}</span>
         <button
@@ -60,7 +63,8 @@ export const ProductCard: FC<ProductCardProps> = ({
           <button
             type="button"
             className="product-card-add-cart-btn"
-            aria-label="Add to Cart"
+            aria-label={`Add ${product.name} to cart`}
+            onClick={() => onAddToCart?.(product)}
           >
             Add to Cart
           </button>

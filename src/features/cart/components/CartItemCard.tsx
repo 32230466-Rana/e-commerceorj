@@ -54,7 +54,7 @@ export default function CartItemCard({
       </label>
 
       <button type="button" className="sx-item__thumb" onClick={onPreview} aria-label={`Preview ${product.name}`}>
-        <img src={product.image} alt="" />
+        <img src={product.image} alt="" style={product.imageFilter ? { filter: product.imageFilter } : undefined} />
       </button>
 
       <div className="sx-item__title">
@@ -62,6 +62,7 @@ export default function CartItemCard({
         <p>{product.type}</p>
       </div>
       <div className="sx-item__options">
+          {product.sizes.length > 0 && (
           <fieldset className="sx-sizes">
             <legend>Size:</legend>
             {product.sizes.map((value) => (
@@ -77,6 +78,8 @@ export default function CartItemCard({
               </button>
             ))}
           </fieldset>
+          )}
+          {product.colors.length > 0 && (
           <fieldset className="sx-colors">
             <legend>Color:</legend>
             {product.colors.map((option) => (
@@ -92,6 +95,10 @@ export default function CartItemCard({
               />
             ))}
           </fieldset>
+          )}
+          {product.colors.length === 0 && product.colorway && (
+            <p className="sx-item__colorway">Color: <span>{product.colorway}</span></p>
+          )}
       </div>
 
       <div className="sx-item__side">

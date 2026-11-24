@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
-import type { SneakerProduct } from "../demoSneakers";
+import type { CatalogProduct } from "../../../catalog/catalog";
 import { CloseIcon, ExpandIcon, SoleXMark } from "./Icons";
 
 /* Keep in sync with the sx-flip-out / sx-flip-in durations in CartPage.css. */
@@ -13,15 +13,15 @@ const MAX_DISPLAY_WIDTH = 420;
 type Phase = "idle" | "exit" | "enter";
 
 interface ShowcaseState {
-  shownId: number | undefined;
+  shownId: string | undefined;
   phase: Phase;
   dir: 1 | -1;
 }
 
 interface SneakerShowcaseProps {
-  products: SneakerProduct[];
-  activeId: number | undefined;
-  onSelect: (productId: number) => void;
+  products: CatalogProduct[];
+  activeId: string | undefined;
+  onSelect: (productId: string) => void;
 }
 
 const reducedMotion = () =>
@@ -54,7 +54,7 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
   const [state, setState] = useState<ShowcaseState>({ shownId: target?.id, phase: "idle", dir: 1 });
   const [maxWidth, setMaxWidth] = useState<number>(MAX_DISPLAY_WIDTH);
   const [zoomOpen, setZoomOpen] = useState(false);
-  const targetRef = useRef<SneakerProduct | undefined>(target);
+  const targetRef = useRef<CatalogProduct | undefined>(target);
   const closeButton = useRef<HTMLButtonElement>(null);
 
   const shown = products.find((product) => product.id === state.shownId) ?? target;
@@ -127,6 +127,7 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
             src={shown.image}
             alt={shown.name}
             draggable={false}
+            style={shown.imageFilter ? { filter: shown.imageFilter } : undefined}
             onLoad={(event) => {
               const natural = event.currentTarget.naturalWidth;
               if (natural > 0) setMaxWidth(Math.min(MAX_DISPLAY_WIDTH, Math.round(natural * MAX_UPSCALE)));
@@ -162,7 +163,7 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
                 aria-pressed={isActive}
                 title={product.name}
               >
-                <img src={product.image} alt="" draggable={false} />
+                <img src={product.image} alt="" draggable={false} style={product.imageFilter ? { filter: product.imageFilter } : undefined} />
               </button>
             );
           })}

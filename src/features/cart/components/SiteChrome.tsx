@@ -199,7 +199,7 @@ export function PageShell({ children, className = "" }: { children: ReactNode; c
   return (
     <div className={`sx-app ${className}`}>
       <SceneBackground />
-      <SiteHeader />
+      {/* The site-wide Navbar (Section A) renders above every page, so the cart pages no longer add their own. */}
       {children}
       <BenefitsBar />
     </div>

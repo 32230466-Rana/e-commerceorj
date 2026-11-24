@@ -13,7 +13,8 @@ import {
 } from "./cartSlice";
 import { selectCartLines, selectSelectedLines, selectSelectedTotals } from "./cartSelectors";
 import { isDemoCart, type CartDispatch, type CartRootState } from "./cartStore";
-import { demoSneakers } from "./demoSneakers";
+import { cartShowcaseProducts } from "../../catalog/catalog";
+import { addToWishlist } from "../wishlist/wishlistSlice";
 import { MAX_LINE_QUANTITY } from "./cartSchema";
 import { formatMoney } from "./pricing";
 import CartItemCard from "./components/CartItemCard";
@@ -31,20 +32,31 @@ export default function CartPage() {
   const lines = useSelector((state: CartRootState) => selectCartLines(state));
   const selectedLines = useSelector((state: CartRootState) => selectSelectedLines(state));
   const totals = useSelector((state: CartRootState) => selectSelectedTotals(state));
-  const [previewId, setPreviewId] = useState<number | undefined>(undefined);
+  const [previewId, setPreviewId] = useState<string | undefined>(undefined);
   const [notice, setNotice] = useState("");
 
   const isEmpty = lines.length === 0;
-  const showcaseProducts = isEmpty ? demoSneakers : lines.map((line) => line.product);
+  const showcaseProducts = isEmpty ? cartShowcaseProducts : lines.map((line) => line.product);
   const activePreviewId = showcaseProducts.some((p) => p.id === previewId) ? previewId : showcaseProducts[0]?.id;
   const allSelected = !isEmpty && selectedLines.length === lines.length;
 
-  function addProduct(productId: number): boolean {
+  function addProduct(productId: string): boolean {
     const before = store.getState().cart.items.find((item) => item.productId === productId)?.quantity ?? 0;
     dispatch(addItem({ productId }));
     const after = store.getState().cart.items.find((item) => item.productId === productId)?.quantity ?? 0;
     return after > before;
   }
+
+  // Save for Later moves the selected pairs from the cart into the shared wishlist.
+  const saveSelectedForLater = () => {
+    if (selectedLines.length === 0) {
+      setNotice("Select the items you want to save for later.");
+      return;
+    }
+    dispatch(addToWishlist(selectedLines.map((line) => line.product.id)));
+    dispatch(removeSelected());
+    setNotice(`Moved ${selectedLines.length} ${selectedLines.length === 1 ? "item" : "items"} to your wishlist.`);
+  };
 
   const proceed = () => {
     if (selectedLines.length === 0) {
@@ -56,7 +68,7 @@ export default function CartPage() {
 
   return (
     <PageShell>
-      <main className="sx-page sx-cart" id="main">
+      <div className="sx-page sx-cart" id="main">
         <SneakerShowcase products={showcaseProducts} activeId={activePreviewId} onSelect={setPreviewId} />
 
         <div className="sx-cart__head">
@@ -111,7 +123,7 @@ export default function CartPage() {
                 <button
                   type="button"
                   className="sx-actions__save"
-                  onClick={() => setNotice("Save for later will be available once the wishlist is connected.")}
+                  onClick={saveSelectedForLater}
                 >
                   <HeartIcon size={18} /> Save for Later
                 </button>
@@ -124,7 +136,7 @@ export default function CartPage() {
               <p>Made to move. Ready to go.</p>
             </div>
             <div className="sx-recommendations__grid">
-              {demoSneakers.map((product) => {
+              {cartShowcaseProducts.map((product) => {
                 const cartLine = lines.find((line) => line.product.id === product.id);
                 const quantity = cartLine?.item.quantity ?? 0;
                 return (
@@ -152,7 +164,7 @@ export default function CartPage() {
         <div className="sx-cart__summary">
           <CartSummary totals={totals} canCheckout={selectedLines.length > 0} onCheckout={proceed} />
         </div>
-      </main>
+      </div>
     </PageShell>
   );
 }

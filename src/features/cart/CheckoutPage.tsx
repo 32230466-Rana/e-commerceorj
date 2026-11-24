@@ -80,7 +80,7 @@ export default function CheckoutPage() {
 
   return (
     <PageShell>
-      <main className="sx-page sx-checkout" id="main">
+      <div className="sx-page sx-checkout" id="main">
         <div className="sx-cart__head sx-checkout__head">
           <div className="sx-title">
             <span className="sx-title__icon"><MapPinIcon size={28} /></span>
@@ -151,10 +151,10 @@ export default function CheckoutPage() {
           <ul>
             {lines.map((line) => (
               <li key={line.product.id}>
-                <img src={line.product.image} alt="" />
+                <img src={line.product.image} alt="" style={line.product.imageFilter ? { filter: line.product.imageFilter } : undefined} />
                 <span>
                   <strong>{line.product.name}</strong>
-                  <small>Size {line.size} · {line.color} · Qty {line.item.quantity}</small>
+                  <small>{[line.size !== undefined ? `Size ${line.size}` : null, line.color, `Qty ${line.item.quantity}`].filter(Boolean).join(" · ")}</small>
                 </span>
                 <b>{formatMoney(line.lineTotal)}</b>
               </li>
@@ -166,7 +166,7 @@ export default function CheckoutPage() {
             <div className="is-total"><dt>Total</dt><dd>{formatMoney(totals.total)}</dd></div>
           </dl>
         </aside>
-      </main>
+      </div>
     </PageShell>
   );
 }

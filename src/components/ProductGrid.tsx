@@ -7,12 +7,14 @@ interface ProductGridProps {
   products: Product[];
   wishlistIds?: string[];
   onToggleWishlist?: (product: Product) => void;
+  onAddToCart?: (product: Product) => void;
 }
 
 export const ProductGrid: FC<ProductGridProps> = ({
   products,
   wishlistIds = [],
   onToggleWishlist,
+  onAddToCart,
 }) => {
   if (products.length === 0) {
     return (
@@ -39,13 +41,14 @@ export const ProductGrid: FC<ProductGridProps> = ({
   }
 
   return (
-    <div className="product-grid">
+    <div className="product-grid devb-grid">
       {products.map((product) => (
         <ProductCard
           key={product.id}
           product={product}
           isInWishlist={wishlistIds.includes(product.id)}
           onToggleWishlist={onToggleWishlist}
+          onAddToCart={onAddToCart}
         />
       ))}
     </div>
