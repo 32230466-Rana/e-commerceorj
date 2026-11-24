@@ -61,6 +61,7 @@ test("Journey 1 — shopping: Home → Products → Cart, quantity, variants, re
   await expect(toast).toContainText("Added to cart");
   await expect(toast).toContainText("Retro Skate Classic Low");
   await expect(toast).toContainText("Cart: 1 item");
+  await expect(toast.locator(".devb-toast-badge")).toHaveText("1"); // ticks up once the photo drops into the basket
   await expect(cartBadge(page)).toHaveText("1");
   await expect(addSkate).toHaveText("Add to Cart", { timeout: 3000 });
 

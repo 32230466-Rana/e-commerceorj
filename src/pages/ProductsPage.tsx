@@ -53,7 +53,7 @@ export const ProductsPage: FC = () => {
 
   const handleAddToCart = (product: Product, photoRect: DOMRect | null) => {
     dispatch(addItem({ productId: product.id }));
-    setAddedEvent((previous) => ({ key: (previous?.key ?? 0) + 1, product, from: photoRect }));
+    setAddedEvent((previous) => ({ key: (previous?.key ?? 0) + 1, product, from: photoRect, countBefore: cartCount }));
   };
 
   const categories = useMemo(() => {
