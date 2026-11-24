@@ -1,0 +1,16 @@
+/** Developer C module — responsive cart, quantity controls and real-time totals. */
+import { Link } from 'react-router';
+import { ArrowLeft, ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
+import { useStore } from '../app/StoreContext';
+import { formatPrice, getProduct } from '../data/products';
+
+export const SHIPPING_THRESHOLD = 180;
+export default function CartPage() {
+  const { cart, cartCount, subtotal, changeQuantity, removeFromCart, clearCart } = useStore();
+  const shipping = subtotal >= SHIPPING_THRESHOLD || cartCount === 0 ? 0 : 12;
+  return <section className="page-shell container"><div className="page-topline"><span className="eyebrow">YOUR PICKS / READY TO MOVE</span><span>{cartCount} ITEMS</span></div><div className="inner-page-title"><h1>YOUR <em>BAG.</em></h1><p>Good taste. Great choices. Let's make it official.</p></div>
+    {cartCount === 0 ? <div className="empty-state spaced"><ShoppingBag size={45} strokeWidth={1.3}/><h2>Your bag is empty.</h2><p>The right pair is waiting for you.</p><Link className="btn btn-primary" to="/products">Shop the collection <ArrowRight size={18}/></Link></div> : <div className="cart-layout"><div className="cart-items"><div className="cart-items-heading"><strong>YOUR SELECTION</strong><button type="button" onClick={clearCart}>Clear bag <Trash2 size={15}/></button></div>
+    {cart.map(({ productId, quantity }) => {const product = getProduct(productId);if (!product) return null; return <article className="cart-item" key={productId}><div className={`cart-item-image ${product.background}`}><img src={product.image} alt={product.name} style={{ filter: product.artFilter }}/></div><div className="cart-item-info"><span className="product-type">{product.gender} / {product.category}</span><h2>{product.name}</h2><p>{product.color}</p><button className="remove-item" type="button" onClick={() => removeFromCart(productId)}><Trash2 size={14}/> Remove</button></div><div className="cart-item-end"><strong>{formatPrice(product.price * quantity)}</strong><div className="qty-control"><button type="button" aria-label={`Decrease ${product.name} quantity`} onClick={() => changeQuantity(productId, quantity - 1)}><Minus size={15}/></button><span aria-live="polite">{quantity}</span><button type="button" aria-label={`Increase ${product.name} quantity`} onClick={() => changeQuantity(productId, quantity + 1)} disabled={quantity >= 99}><Plus size={15}/></button></div></div></article>; })}<Link to="/products" className="back-shopping"><ArrowLeft size={16}/> Continue shopping</Link></div>
+    <aside className="order-box"><span className="eyebrow">ALMOST YOURS</span><h2>ORDER SUMMARY</h2><div className="order-line"><span>Subtotal ({cartCount} items)</span><strong>{formatPrice(subtotal)}</strong></div><div className="order-line"><span>Shipping</span><strong>{shipping ? formatPrice(shipping) : 'FREE'}</strong></div>{shipping > 0 && <p className="shipping-tip">Add {formatPrice(SHIPPING_THRESHOLD - subtotal)} for free shipping.</p>}<div className="order-total"><span>Total</span><strong>{formatPrice(subtotal + shipping)}</strong></div><Link className="btn btn-primary btn-full" to="/checkout">Proceed to checkout <ArrowRight size={18}/></Link><p className="summary-note">Demo checkout. No payment will be collected.</p></aside></div>}
+  </section>;
+}
