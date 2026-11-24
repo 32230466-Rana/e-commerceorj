@@ -1,4 +1,4 @@
-import type { FC } from 'react';
+import { useEffect, useState, type FC } from 'react';
 import type { Product } from '../types/product';
 import '../styles/ProductCard.css';
 
@@ -16,6 +16,21 @@ export const ProductCard: FC<ProductCardProps> = ({
   onToggleWishlist,
   onAddToCart,
 }) => {
+  // Integration: the cart counter lives in the site header, which is off-screen once the
+  // grid is scrolled, so confirm the add on the button itself for a moment.
+  const [justAdded, setJustAdded] = useState(false);
+  useEffect(() => {
+    if (!justAdded) return;
+    const timer = window.setTimeout(() => setJustAdded(false), 1500);
+    return () => window.clearTimeout(timer);
+  }, [justAdded]);
+
+  const handleAddToCartClick = () => {
+    if (!onAddToCart) return;
+    onAddToCart(product);
+    setJustAdded(true);
+  };
+
   const handleWishlistClick = () => {
     if (onToggleWishlist) {
       onToggleWishlist(product);
@@ -64,10 +79,13 @@ export const ProductCard: FC<ProductCardProps> = ({
             type="button"
             className="product-card-add-cart-btn"
             aria-label={`Add ${product.name} to cart`}
-            onClick={() => onAddToCart?.(product)}
+            onClick={handleAddToCartClick}
           >
-            Add to Cart
+            {justAdded ? 'Added ✓' : 'Add to Cart'}
           </button>
+          <span className="devb-visually-hidden" role="status" aria-live="polite">
+            {justAdded ? `${product.name} added to cart` : ''}
+          </span>
         </div>
       </div>
     </article>

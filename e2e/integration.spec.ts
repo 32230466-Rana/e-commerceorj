@@ -54,8 +54,11 @@ test("Journey 1 — shopping: Home → Products → Cart, quantity, variants, re
   // Select a sneaker with Developer B's search, then add it to the shared cart.
   await page.getByPlaceholder(/Search shoes/i).fill("Retro Skate");
   await expect(page.locator(".devb-card")).toHaveCount(1);
-  await page.getByRole("button", { name: "Add Retro Skate Classic Low to cart" }).click();
+  const addSkate = page.getByRole("button", { name: "Add Retro Skate Classic Low to cart" });
+  await addSkate.click();
+  await expect(addSkate).toHaveText("Added ✓"); // visible feedback even when the header is scrolled away
   await expect(cartBadge(page)).toHaveText("1");
+  await expect(addSkate).toHaveText("Add to Cart", { timeout: 3000 });
 
   await header(page).getByRole("link", { name: /^Cart, 1 items/ }).click();
   await expect(page).toHaveURL(/\/cart$/);
