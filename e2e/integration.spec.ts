@@ -56,7 +56,11 @@ test("Journey 1 — shopping: Home → Products → Cart, quantity, variants, re
   await expect(page.locator(".devb-card")).toHaveCount(1);
   const addSkate = page.getByRole("button", { name: "Add Retro Skate Classic Low to cart" });
   await addSkate.click();
-  await expect(addSkate).toHaveText("Added ✓"); // visible feedback even when the header is scrolled away
+  await expect(addSkate).toHaveText("Added"); // visible feedback even when the header is scrolled away
+  const toast = page.locator(".devb-toast");
+  await expect(toast).toContainText("Added to cart");
+  await expect(toast).toContainText("Retro Skate Classic Low");
+  await expect(toast).toContainText("Cart: 1 item");
   await expect(cartBadge(page)).toHaveText("1");
   await expect(addSkate).toHaveText("Add to Cart", { timeout: 3000 });
 

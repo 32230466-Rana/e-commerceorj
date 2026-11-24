@@ -1,4 +1,4 @@
-import { useState, useMemo } from 'react';
+import { useCallback, useState, useMemo } from 'react';
 import type { FC } from 'react';
 import type { Product, SortOrder } from '../types/product';
 import { initialProductsSeed } from '../seed/productsSeed';
@@ -8,6 +8,8 @@ import { WishlistDrawer } from '../components/WishlistDrawer';
 import { useDispatch, useSelector } from 'react-redux';
 import type { CartDispatch, CartRootState } from '../features/cart/cartStore';
 import { addItem } from '../features/cart/cartSlice';
+import { selectCartCount } from '../features/cart/cartSelectors';
+import { AddedToCartToast, type AddedToCartEvent } from '../components/AddedToCartToast';
 import { clearWishlist, removeFromWishlist, selectWishlistIds, toggleWishlist } from '../features/wishlist/wishlistSlice';
 import { getCatalogProduct, toDevBProduct } from '../catalog/catalog';
 import '../styles/ProductsPage.css';
@@ -45,8 +47,13 @@ export const ProductsPage: FC = () => {
     dispatch(clearWishlist());
   };
 
-  const handleAddToCart = (product: Product) => {
+  const cartCount = useSelector((state: CartRootState) => selectCartCount(state));
+  const [addedEvent, setAddedEvent] = useState<AddedToCartEvent | null>(null);
+  const closeAddedToast = useCallback(() => setAddedEvent(null), []);
+
+  const handleAddToCart = (product: Product, photoRect: DOMRect | null) => {
     dispatch(addItem({ productId: product.id }));
+    setAddedEvent((previous) => ({ key: (previous?.key ?? 0) + 1, product, from: photoRect }));
   };
 
   const categories = useMemo(() => {
@@ -182,6 +189,9 @@ export const ProductsPage: FC = () => {
         onRemoveFromWishlist={handleRemoveFromWishlist}
         onClearWishlist={handleClearWishlist}
       />
+
+      {/* Integration: "Added to cart" confirmation with the photo flying into it. */}
+      <AddedToCartToast event={addedEvent} cartCount={cartCount} onClose={closeAddedToast} />
 
       {/* Mobile navigation is provided by the site-wide Navbar (MobileNavDrawer kept in src/components). */}
     </div>

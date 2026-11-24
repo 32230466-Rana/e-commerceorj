@@ -1,4 +1,4 @@
-import { useEffect, useState, type FC } from 'react';
+import { useEffect, useRef, useState, type FC } from 'react';
 import type { Product } from '../types/product';
 import '../styles/ProductCard.css';
 
@@ -7,7 +7,7 @@ interface ProductCardProps {
   isInWishlist?: boolean;
   onToggleWishlist?: (product: Product) => void;
   /** Integration: adds the product to the shared Redux cart. */
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: Product, photoRect: DOMRect | null) => void;
 }
 
 export const ProductCard: FC<ProductCardProps> = ({
@@ -19,16 +19,19 @@ export const ProductCard: FC<ProductCardProps> = ({
   // Integration: the cart counter lives in the site header, which is off-screen once the
   // grid is scrolled, so confirm the add on the button itself for a moment.
   const [justAdded, setJustAdded] = useState(false);
+  const [addCount, setAddCount] = useState(0);
+  const imageRef = useRef<HTMLImageElement>(null);
   useEffect(() => {
     if (!justAdded) return;
     const timer = window.setTimeout(() => setJustAdded(false), 1500);
     return () => window.clearTimeout(timer);
-  }, [justAdded]);
+  }, [justAdded, addCount]);
 
   const handleAddToCartClick = () => {
     if (!onAddToCart) return;
-    onAddToCart(product);
+    onAddToCart(product, imageRef.current?.getBoundingClientRect() ?? null);
     setJustAdded(true);
+    setAddCount((count) => count + 1);
   };
 
   const handleWishlistClick = () => {
@@ -63,6 +66,7 @@ export const ProductCard: FC<ProductCardProps> = ({
           </svg>
         </button>
         <img
+          ref={imageRef}
           src={product.imageUrl}
           alt={product.name}
           className="product-card-image"
@@ -77,11 +81,20 @@ export const ProductCard: FC<ProductCardProps> = ({
           <span className="product-card-price">${product.price.toFixed(2)}</span>
           <button
             type="button"
-            className="product-card-add-cart-btn"
+            className={`product-card-add-cart-btn${justAdded ? ' is-added' : ''}`}
             aria-label={`Add ${product.name} to cart`}
             onClick={handleAddToCartClick}
           >
-            {justAdded ? 'Added ✓' : 'Add to Cart'}
+            {justAdded ? (
+              <>
+                <svg className="product-card-add-cart-check" viewBox="0 0 24 24" aria-hidden="true">
+                  <path d="M5 12.5l4.5 4.5L19 7.5" />
+                </svg>
+                Added
+              </>
+            ) : (
+              'Add to Cart'
+            )}
           </button>
           <span className="devb-visually-hidden" role="status" aria-live="polite">
             {justAdded ? `${product.name} added to cart` : ''}

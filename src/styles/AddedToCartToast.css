@@ -1,0 +1,202 @@
+/* Integration: "Added to cart" confirmation on Developer B's Products page,
+   in Developer B's colours, type and radii. */
+
+.devb-fly-photo {
+  position: fixed;
+  z-index: 1200;
+  object-fit: cover;
+  border-radius: 18px;
+  box-shadow: var(--shadow-lg);
+  pointer-events: none;
+  will-change: transform, opacity;
+}
+
+.devb-toast-region {
+  position: fixed;
+  right: 24px;
+  bottom: 24px;
+  z-index: 1100;
+  pointer-events: none;
+}
+
+.devb-toast {
+  position: relative;
+  display: grid;
+  grid-template-columns: 56px 1fr auto;
+  align-items: center;
+  gap: 14px;
+  width: min(380px, calc(100vw - 32px));
+  padding: 14px 40px 16px 14px;
+  overflow: hidden;
+  color: var(--color-text-dark);
+  font-family: var(--font-family-body);
+  background: var(--color-bg-card);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  color-scheme: light;
+  pointer-events: auto;
+  animation: devb-toast-in 0.45s var(--transition-normal, cubic-bezier(0.16, 1, 0.3, 1)) both;
+}
+
+.devb-toast-thumb {
+  width: 56px;
+  height: 56px;
+  object-fit: cover;
+  border-radius: 12px;
+  background: var(--color-brand-magenta-light);
+  animation: devb-thumb-land 0.35s 0.6s ease-out both;
+}
+
+.devb-toast-text {
+  display: grid;
+  gap: 2px;
+  min-width: 0;
+}
+
+.devb-toast-title {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  color: var(--color-brand-magenta);
+  font-size: 12px;
+  font-weight: 800;
+  letter-spacing: 0.4px;
+  text-transform: uppercase;
+}
+
+.devb-toast-check {
+  width: 18px;
+  height: 18px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 2.2;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+
+.devb-toast-check circle {
+  stroke-dasharray: 70;
+  stroke-dashoffset: 70;
+  animation: devb-draw 0.45s 0.15s ease-out forwards;
+}
+
+.devb-toast-check path {
+  stroke-dasharray: 16;
+  stroke-dashoffset: 16;
+  animation: devb-draw 0.3s 0.5s ease-out forwards;
+}
+
+.devb-toast-name {
+  overflow: hidden;
+  font-size: 15px;
+  font-weight: 700;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.devb-toast-meta {
+  color: var(--color-text-muted);
+  font-size: 12px;
+  font-weight: 600;
+}
+
+.devb-toast-link {
+  padding: 8px 14px;
+  color: var(--color-text-light);
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-decoration: none;
+  text-transform: uppercase;
+  white-space: nowrap;
+  background: var(--color-text-dark);
+  border-radius: var(--radius-pill);
+  transition: background-color var(--transition-fast);
+}
+
+.devb-toast-link:hover,
+.devb-toast-link:focus-visible {
+  background: var(--color-brand-magenta);
+}
+
+.devb-toast-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  color: var(--color-text-muted);
+  font-size: 20px;
+  line-height: 1;
+  background: none;
+  border: 0;
+  border-radius: 50%;
+  cursor: pointer;
+}
+
+.devb-toast-close:hover {
+  color: var(--color-text-dark);
+  background: var(--color-bg-primary);
+}
+
+.devb-toast-timer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  height: 3px;
+  width: 100%;
+  background: var(--color-brand-magenta);
+  transform-origin: left;
+  animation: devb-timer linear forwards;
+}
+
+@keyframes devb-toast-in {
+  from { opacity: 0; transform: translateY(24px) scale(0.96); }
+  to { opacity: 1; transform: none; }
+}
+
+@keyframes devb-thumb-land {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.12); }
+  100% { transform: scale(1); }
+}
+
+@keyframes devb-draw {
+  to { stroke-dashoffset: 0; }
+}
+
+@keyframes devb-timer {
+  from { transform: scaleX(1); }
+  to { transform: scaleX(0); }
+}
+
+@media (max-width: 640px) {
+  .devb-toast-region {
+    right: 16px;
+    left: 16px;
+    bottom: 16px;
+  }
+
+  .devb-toast {
+    width: 100%;
+    grid-template-columns: 48px 1fr auto;
+    gap: 10px;
+  }
+
+  .devb-toast-thumb {
+    width: 48px;
+    height: 48px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .devb-toast,
+  .devb-toast-thumb,
+  .devb-toast-check circle,
+  .devb-toast-check path {
+    animation: none;
+    stroke-dashoffset: 0;
+  }
+}

@@ -7,7 +7,7 @@ interface ProductGridProps {
   products: Product[];
   wishlistIds?: string[];
   onToggleWishlist?: (product: Product) => void;
-  onAddToCart?: (product: Product) => void;
+  onAddToCart?: (product: Product, photoRect: DOMRect | null) => void;
 }
 
 export const ProductGrid: FC<ProductGridProps> = ({
