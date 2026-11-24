@@ -29,3 +29,11 @@ describe("shared catalog", () => {
     }
   });
 });
+
+describe("cart-stage backdrop removal", () => {
+  it("is only configured for Developer B photos", () => {
+    const withBackdrop = catalog.filter((product) => product.backdrop);
+    expect(withBackdrop.map((product) => product.id)).toEqual(["kxn-01", "kxn-03", "kxn-06"]);
+    expect(withBackdrop.every((product) => product.source === "products")).toBe(true);
+  });
+});

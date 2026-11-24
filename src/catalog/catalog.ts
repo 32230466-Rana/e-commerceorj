@@ -15,6 +15,7 @@ import { demoSneakers } from '../features/cart/demoSneakers';
 import { initialProductsSeed } from '../seed/productsSeed';
 import { products as sectionAProducts } from '../data/products';
 import type { Product as DevBProduct } from '../types/product';
+import type { BackdropSettings } from './photoCutout';
 
 export type CatalogSource = 'cart' | 'products' | 'home';
 
@@ -33,6 +34,8 @@ export interface CatalogProduct {
   spotlightImage?: string;
   /** CSS filter Section A uses to recolour shared product art. */
   imageFilter?: string;
+  /** Developer B photos only: settings for removing a plain studio backdrop on the cart stage. */
+  backdrop?: BackdropSettings;
   /** Selectable sizes; empty when the source data defines none. */
   sizes: number[];
   /** Selectable colours; empty when the source data defines none. */
@@ -57,12 +60,23 @@ const cartCollection: CatalogProduct[] = demoSneakers.map((sneaker) => ({
   source: 'cart',
 }));
 
+/**
+ * Developer B photos whose plain backdrop can be removed cleanly (checked against the real
+ * photos). The others are on textured or near-white backdrops and are shown as framed photos.
+ */
+const removableBackdrops: Record<string, BackdropSettings> = {
+  'kxn-01': { tolerance: 20, step: 6 },
+  'kxn-03': { tolerance: 20, step: 6 },
+  'kxn-06': { tolerance: 20, step: 6 },
+};
+
 const productsCollection: CatalogProduct[] = initialProductsSeed.map((product) => ({
   id: product.id,
   name: product.name,
   type: product.category,
   price: product.price,
   image: product.imageUrl,
+  backdrop: removableBackdrops[product.id],
   sizes: [],
   colors: [],
   source: 'products',

@@ -237,6 +237,15 @@
   transform: rotateY(0deg) translateY(0) scale(1);
   transform-origin: 50% 60%;
 }
+/* Integration: Developer B photos whose backdrop can't be cut out are shown as a framed photo. */
+.sx-shoe--photo .sx-shoe__img {
+  width: 86%; height: 86%;
+  object-fit: cover;
+  border-radius: 26px;
+  border: 5px solid #fff;
+  filter: none;
+  box-shadow: 0 22px 36px rgba(20, 22, 30, 0.22);
+}
 .sx-shoe__shadow {
   position: absolute; z-index: -1; left: 18%; right: 18%; bottom: 8%; height: 12%;
   border-radius: 50%;
@@ -299,6 +308,7 @@
   transition: transform 0.25s ease, box-shadow 0.25s ease;
 }
 .sx-picker__thumb img { width: 100%; height: 100%; object-fit: contain; }
+.sx-picker__thumb img.is-photo { object-fit: cover; border-radius: 10px; }
 .sx-picker__thumb:hover { transform: translateY(-2px); box-shadow: 0 8px 18px rgba(31, 41, 66, 0.16); }
 .sx-picker__thumb::after {
   content: ""; position: absolute; inset: 0; border-radius: inherit;
@@ -373,6 +383,7 @@
 }
 .sx-item__thumb:hover { transform: scale(1.04) rotate(-2deg); }
 .sx-item__thumb img { width: 100%; height: 100%; object-fit: contain; filter: drop-shadow(0 6px 6px rgba(0, 0, 0, 0.18)); }
+.sx-item__thumb img.is-photo { object-fit: cover; border-radius: 14px; filter: none; }
 
 .sx-item > .sx-check { grid-area: check; }
 .sx-item__thumb { grid-area: thumb; }

@@ -3,6 +3,7 @@ import type { CartLine } from "../cartSelectors";
 import { MAX_LINE_QUANTITY } from "../cartSchema";
 import { formatMoney } from "../pricing";
 import { CheckIcon, TrashIcon } from "./Icons";
+import { useDisplayImage } from "../../../catalog/useDisplayImage";
 
 interface CartItemCardProps {
   line: CartLine;
@@ -32,6 +33,7 @@ export default function CartItemCard({
   const { product, item, size, color, selected, lineTotal } = line;
   const [leaving, setLeaving] = useState(false);
   const titleId = `cart-item-${product.id}-title`;
+  const thumb = useDisplayImage(product);
 
   const remove = () => {
     if (leaving) return;
@@ -54,7 +56,14 @@ export default function CartItemCard({
       </label>
 
       <button type="button" className="sx-item__thumb" onClick={onPreview} aria-label={`Preview ${product.name}`}>
-        <img src={product.image} alt="" style={product.imageFilter ? { filter: product.imageFilter } : undefined} />
+        {thumb.src && (
+          <img
+            src={thumb.src}
+            alt=""
+            className={thumb.transparent ? undefined : "is-photo"}
+            style={product.imageFilter ? { filter: product.imageFilter } : undefined}
+          />
+        )}
       </button>
 
       <div className="sx-item__title">

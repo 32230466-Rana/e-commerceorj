@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState, type CSSProperties } from "react";
 import type { CatalogProduct } from "../../../catalog/catalog";
 import { CloseIcon, ExpandIcon, SoleXMark } from "./Icons";
+import { loadDisplayImage, useDisplayImage } from "../../../catalog/useDisplayImage";
 
 /* Keep in sync with the sx-flip-out / sx-flip-in durations in CartPage.css. */
 const EXIT_MS = 300;
@@ -63,10 +64,12 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
     targetRef.current = target;
   }, [target]);
 
-  // Warm the cache for every selectable sneaker.
+  // Warm the cache for every selectable sneaker (including any backdrop cut-outs).
   useEffect(() => {
-    products.forEach((product) => void preload(product.image));
+    products.forEach((product) => void loadDisplayImage(product).then(preload));
   }, [products]);
+
+  const display = useDisplayImage(shown);
 
   // idle → exit when a different sneaker is requested.
   useEffect(() => {
@@ -87,7 +90,7 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
         if (state.phase === "exit") {
           const next = targetRef.current;
           if (!next) return;
-          void preload(next.image).then(() => {
+          void loadDisplayImage(next).then(preload).then(() => {
             if (!cancelled) setState((s) => ({ ...s, shownId: next.id, phase: reduced ? "idle" : "enter" }));
           });
         } else {
@@ -120,11 +123,16 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
     <section className="sx-showcase" aria-label="Sneaker preview">
       <div className={`sx-stage is-${state.phase}`} style={stageStyle}>
         <div className="sx-stage__glow" aria-hidden="true" />
-        <div className="sx-shoe" data-testid="hero-sneaker" data-product-id={shown.id} data-phase={state.phase}>
-          <img
+        <div
+          className={`sx-shoe${display.transparent ? "" : " sx-shoe--photo"}`}
+          data-testid="hero-sneaker"
+          data-product-id={shown.id}
+          data-phase={state.phase}
+        >
+          {display.src && <img
             key={shown.id}
             className="sx-shoe__img"
-            src={shown.image}
+            src={display.src}
             alt={shown.name}
             draggable={false}
             style={shown.imageFilter ? { filter: shown.imageFilter } : undefined}
@@ -132,7 +140,7 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
               const natural = event.currentTarget.naturalWidth;
               if (natural > 0) setMaxWidth(Math.min(MAX_DISPLAY_WIDTH, Math.round(natural * MAX_UPSCALE)));
             }}
-          />
+          />}
           <span className="sx-shoe__shadow" aria-hidden="true" />
         </div>
         <div className="sx-pedestal" aria-hidden="true">
@@ -158,12 +166,12 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
                 key={product.id}
                 className={`sx-picker__thumb${isActive ? " is-active" : ""}`}
                 onClick={() => onSelect(product.id)}
-                onPointerEnter={() => void preload(product.image)}
+                onPointerEnter={() => void loadDisplayImage(product).then(preload)}
                 aria-label={`Preview ${product.name}`}
                 aria-pressed={isActive}
                 title={product.name}
               >
-                <img src={product.image} alt="" draggable={false} style={product.imageFilter ? { filter: product.imageFilter } : undefined} />
+                <PickerImage product={product} />
               </button>
             );
           })}
@@ -177,11 +185,25 @@ export default function SneakerShowcase({ products, activeId, onSelect }: Sneake
             <button ref={closeButton} type="button" className="sx-zoom__close" onClick={() => setZoomOpen(false)} aria-label="Close preview">
               <CloseIcon size={20} />
             </button>
-            <img src={shown.image} alt={shown.name} style={{ maxWidth: maxWidth * 1.6 }} />
+            <img src={display.src ?? shown.image} alt={shown.name} style={{ maxWidth: maxWidth * 1.6 }} />
             <p>{shown.name}</p>
           </div>
         </div>
       )}
     </section>
+  );
+}
+
+function PickerImage({ product }: { product: CatalogProduct }) {
+  const display = useDisplayImage(product);
+  if (!display.src) return null;
+  return (
+    <img
+      src={display.src}
+      alt=""
+      draggable={false}
+      className={display.transparent ? undefined : "is-photo"}
+      style={product.imageFilter ? { filter: product.imageFilter } : undefined}
+    />
   );
 }
