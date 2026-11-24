@@ -1,8 +1,8 @@
 /** Developer C module — responsive cart, quantity controls and real-time totals. */
 import { Link } from 'react-router';
 import { ArrowLeft, ArrowRight, Minus, Plus, ShoppingBag, Trash2 } from 'lucide-react';
-import { useStore } from '../app/StoreContext';
-import { formatPrice, getProduct } from '../data/products';
+import { useStore } from '../../app/StoreContext';
+import { formatPrice, getProduct } from '../../data/products';
 
 export const SHIPPING_THRESHOLD = 180;
 export default function CartPage() {
