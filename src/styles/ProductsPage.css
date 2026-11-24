@@ -1,0 +1,323 @@
+.products-page-container {
+  min-height: 100vh;
+  background-color: var(--color-bg-primary);
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+/* KIXON Header */
+.kixon-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 24px 60px;
+  background-color: var(--color-bg-primary);
+  border-bottom: 1px solid var(--color-border);
+  position: sticky;
+  top: 0;
+  z-index: 100;
+  backdrop-filter: blur(8px);
+}
+
+.kixon-logo {
+  font-family: var(--font-family-display);
+  font-size: 30px;
+  font-weight: 900;
+  letter-spacing: -0.5px;
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+  user-select: none;
+}
+
+.kixon-logo-accent {
+  color: var(--color-brand-magenta);
+}
+
+.kixon-nav {
+  display: flex;
+  gap: 36px;
+  align-items: center;
+}
+
+.kixon-nav-link {
+  font-size: 14px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  text-decoration: none;
+  cursor: pointer;
+  transition: color var(--transition-fast);
+}
+
+.kixon-nav-link:hover,
+.kixon-nav-link-active {
+  color: var(--color-text-dark);
+}
+
+.kixon-nav-link-active {
+  position: relative;
+}
+
+.kixon-nav-link-active::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background-color: var(--color-brand-magenta);
+}
+
+/* Header Actions (Wishlist button & Burger button) */
+.kixon-header-actions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.kixon-burger-btn {
+  display: none;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  width: 40px;
+  height: 40px;
+  align-items: center;
+  justify-content: center;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  transition: all var(--transition-fast);
+  touch-action: manipulation;
+  padding: 0;
+}
+
+.kixon-burger-btn:hover {
+  border-color: var(--color-brand-magenta);
+  color: var(--color-brand-magenta);
+  box-shadow: var(--shadow-sm);
+}
+
+.kixon-burger-icon {
+  width: 20px;
+  height: 20px;
+}
+
+.kixon-wishlist-nav-btn {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 8px 16px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: #FFFFFF;
+  color: var(--color-text-dark);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  transition: all var(--transition-fast);
+  min-height: 40px;
+}
+
+.kixon-wishlist-nav-btn:hover {
+  border-color: var(--color-brand-magenta);
+  color: var(--color-brand-magenta);
+  box-shadow: var(--shadow-sm);
+}
+
+.kixon-wishlist-nav-icon {
+  width: 16px;
+  height: 16px;
+  color: var(--color-brand-magenta);
+  flex-shrink: 0;
+}
+
+.kixon-wishlist-badge {
+  background-color: var(--color-brand-magenta);
+  color: var(--color-text-light);
+  font-size: 11px;
+  font-weight: 800;
+  padding: 2px 7px;
+  border-radius: var(--radius-pill);
+  min-width: 18px;
+  text-align: center;
+}
+
+/* Main Container */
+.products-page-main {
+  max-width: 1320px;
+  width: 100%;
+  margin: 0 auto;
+  padding: 48px 32px 80px;
+  flex: 1;
+}
+
+/* Hero Section */
+.products-hero-section {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  margin-bottom: 40px;
+}
+
+.products-hero-tag-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.products-hero-pill {
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--color-brand-magenta);
+  background-color: var(--color-brand-magenta-light);
+  padding: 5px 14px;
+  border-radius: var(--radius-pill);
+}
+
+.products-hero-heading-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.products-hero-title {
+  font-family: var(--font-family-display);
+  font-size: 64px;
+  font-weight: 900;
+  letter-spacing: -1.5px;
+  line-height: 0.95;
+  color: var(--color-text-dark);
+  margin: 0;
+  text-transform: uppercase;
+}
+
+.products-hero-title-accent {
+  background: linear-gradient(135deg, var(--color-brand-magenta) 0%, #FF3366 50%, #FF8C33 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  display: inline-block;
+}
+
+.products-hero-meta {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+  font-size: 14px;
+  font-weight: 700;
+  color: var(--color-text-muted);
+}
+
+.products-hero-count {
+  font-size: 20px;
+  font-weight: 900;
+  color: var(--color-text-dark);
+  font-family: var(--font-family-display);
+}
+
+.products-hero-desc {
+  font-size: 16px;
+  color: var(--color-text-muted);
+  max-width: 560px;
+  margin: 0;
+  line-height: 1.6;
+}
+
+/* Tablet Responsiveness */
+@media (max-width: 900px) {
+  .kixon-header {
+    padding: 18px 32px;
+  }
+
+  .products-page-main {
+    padding: 32px 24px 60px;
+  }
+
+  .products-hero-title {
+    font-size: 48px;
+  }
+}
+
+/* Mobile Responsiveness */
+@media (max-width: 768px) {
+  .kixon-header {
+    padding: 14px 20px;
+  }
+
+  .kixon-nav {
+    display: none;
+  }
+
+  .kixon-logo {
+    font-size: 24px;
+  }
+
+  .kixon-burger-btn {
+    display: flex;
+  }
+
+  .kixon-wishlist-nav-btn {
+    padding: 6px 12px;
+    font-size: 12px;
+    min-height: 36px;
+  }
+
+  .products-page-main {
+    padding: 24px 16px 48px;
+  }
+
+  .products-hero-section {
+    gap: 10px;
+    margin-bottom: 28px;
+  }
+
+  .products-hero-heading-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+  }
+
+  .products-hero-title {
+    font-size: 38px;
+    letter-spacing: -1px;
+    line-height: 1.05;
+  }
+
+  .products-hero-desc {
+    font-size: 14px;
+    line-height: 1.5;
+  }
+}
+
+/* Small Smartphone (<= 480px) */
+@media (max-width: 480px) {
+  .kixon-header {
+    padding: 12px 14px;
+  }
+
+  .kixon-logo {
+    font-size: 22px;
+  }
+
+  .products-page-main {
+    padding: 18px 12px 40px;
+  }
+
+  .products-hero-title {
+    font-size: 32px;
+  }
+
+  .products-hero-meta {
+    font-size: 12px;
+  }
+
+  .products-hero-count {
+    font-size: 16px;
+  }
+}

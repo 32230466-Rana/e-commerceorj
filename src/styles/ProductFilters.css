@@ -1,0 +1,309 @@
+/* Modern Sneaker Toolbar & Filters */
+.product-filters-toolbar {
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+  margin-bottom: 32px;
+  width: 100%;
+}
+
+/* Category Filter Bar */
+.filter-categories-bar {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  overflow-x: auto;
+  padding: 4px 2px;
+  scrollbar-width: thin;
+  -webkit-overflow-scrolling: touch;
+}
+
+.filter-categories-bar::-webkit-scrollbar {
+  height: 4px;
+}
+
+.filter-categories-bar::-webkit-scrollbar-thumb {
+  background: var(--color-border-hover);
+  border-radius: var(--radius-pill);
+}
+
+.category-tab-btn {
+  padding: 9px 18px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: transparent;
+  color: var(--color-text-dark);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.3px;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
+  min-height: 38px;
+  transition: all var(--transition-fast);
+}
+
+.category-tab-btn:hover {
+  border-color: var(--color-text-dark);
+  background-color: rgba(0, 0, 0, 0.03);
+}
+
+.category-tab-btn-active {
+  background-color: var(--color-brand-magenta);
+  color: var(--color-text-light);
+  border-color: var(--color-brand-magenta);
+}
+
+.category-tab-btn-active:hover {
+  background-color: var(--color-brand-magenta-hover);
+  border-color: var(--color-brand-magenta-hover);
+  color: var(--color-text-light);
+}
+
+/* Controls Row */
+.filter-controls-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  padding: 12px 18px;
+  background-color: #FFFFFF;
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.03);
+  width: 100%;
+}
+
+/* Search Bar */
+.filter-search-box {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex: 1;
+  min-width: 200px;
+  min-height: 40px;
+}
+
+.filter-search-icon {
+  width: 18px;
+  height: 18px;
+  color: var(--color-text-muted);
+  flex-shrink: 0;
+}
+
+.filter-search-input-field {
+  width: 100%;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--color-text-dark);
+}
+
+.filter-search-input-field::placeholder {
+  color: var(--color-text-muted);
+}
+
+.filter-search-clear-btn {
+  background: transparent;
+  border: none;
+  color: var(--color-text-muted);
+  font-size: 14px;
+  padding: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 32px;
+  min-height: 32px;
+  border-radius: 50%;
+  transition: color var(--transition-fast), background-color var(--transition-fast);
+}
+
+.filter-search-clear-btn:hover {
+  color: var(--color-text-dark);
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+/* Secondary Actions Group (Price, Sort, Reset) */
+.filter-actions-group {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 10px;
+}
+
+.filter-price-selector {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 4px 12px;
+  background-color: var(--color-bg-primary);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius-pill);
+  min-height: 38px;
+}
+
+.filter-price-tag {
+  font-size: 11px;
+  font-weight: 800;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+}
+
+.filter-price-input {
+  width: 52px;
+  border: none;
+  background: transparent;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--color-text-dark);
+  outline: none;
+  text-align: center;
+}
+
+.filter-price-divider {
+  color: var(--color-text-muted);
+  font-weight: 600;
+  font-size: 12px;
+}
+
+/* Sort Selector */
+.filter-sort-dropdown-wrapper {
+  position: relative;
+}
+
+.filter-sort-dropdown {
+  appearance: none;
+  -webkit-appearance: none;
+  padding: 8px 32px 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px solid var(--color-border);
+  background-color: var(--color-bg-primary);
+  font-size: 13px;
+  font-weight: 700;
+  color: var(--color-text-dark);
+  cursor: pointer;
+  outline: none;
+  min-height: 38px;
+  transition: all var(--transition-fast);
+}
+
+.filter-sort-dropdown:hover {
+  border-color: var(--color-text-dark);
+}
+
+.filter-sort-dropdown:focus {
+  border-color: var(--color-brand-magenta);
+}
+
+.filter-sort-arrow-icon {
+  position: absolute;
+  right: 12px;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 14px;
+  height: 14px;
+  color: var(--color-text-dark);
+  pointer-events: none;
+}
+
+/* Reset Button */
+.filter-reset-action-btn {
+  padding: 8px 14px;
+  border-radius: var(--radius-pill);
+  border: 1px dashed var(--color-border-hover);
+  background: transparent;
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  color: var(--color-text-muted);
+  min-height: 38px;
+  transition: all var(--transition-fast);
+}
+
+.filter-reset-action-btn:hover {
+  border-color: var(--color-brand-magenta);
+  color: var(--color-brand-magenta);
+}
+
+/* Tablet Responsiveness */
+@media (max-width: 960px) {
+  .filter-controls-row {
+    border-radius: var(--radius-lg);
+    flex-direction: column;
+    align-items: stretch;
+    padding: 14px 16px;
+    gap: 12px;
+  }
+
+  .filter-search-box {
+    width: 100%;
+    min-width: 100%;
+  }
+
+  .filter-actions-group {
+    width: 100%;
+    justify-content: space-between;
+  }
+}
+
+/* Mobile Responsiveness (<= 640px) */
+@media (max-width: 640px) {
+  .product-filters-toolbar {
+    gap: 12px;
+    margin-bottom: 24px;
+  }
+
+  .filter-controls-row {
+    padding: 12px 14px;
+    border-radius: var(--radius-md);
+  }
+
+  .filter-search-input-field {
+    font-size: 16px; /* Avoids iOS auto-zoom on input focus */
+  }
+
+  .filter-actions-group {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    width: 100%;
+  }
+
+  .filter-price-selector {
+    grid-column: 1 / -1;
+    justify-content: center;
+    width: 100%;
+    padding: 6px 12px;
+  }
+
+  .filter-price-input {
+    font-size: 15px;
+    width: 60px;
+  }
+
+  .filter-sort-dropdown-wrapper {
+    width: 100%;
+  }
+
+  .filter-sort-dropdown {
+    width: 100%;
+    font-size: 13px;
+  }
+
+  .filter-reset-action-btn {
+    width: 100%;
+    text-align: center;
+  }
+}
+
+/* Small Screen (<= 380px) */
+@media (max-width: 380px) {
+  .filter-actions-group {
+    grid-template-columns: 1fr;
+  }
+}
