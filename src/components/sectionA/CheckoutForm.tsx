@@ -1,6 +1,6 @@
 import { useState, type FormEvent } from 'react';
 import { ArrowRight } from 'lucide-react';
-import { checkoutFields, checkoutSchema, EMPTY_CHECKOUT, type CheckoutDetails, type CheckoutField } from '../lib/checkout';
+import { checkoutFields, checkoutSchema, EMPTY_CHECKOUT, type CheckoutDetails, type CheckoutField } from '../../lib/checkout';
 
 /** UI-level validation: error text appears next to each invalid field. */
 export default function CheckoutForm({ onValidSubmit }: { onValidSubmit: (data: CheckoutDetails) => void }) {

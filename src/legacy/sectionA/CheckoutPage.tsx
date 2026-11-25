@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Link, Navigate } from 'react-router';
 import { CheckCircle2, ArrowRight } from 'lucide-react';
-import CheckoutForm from '../../components/CheckoutForm';
+import CheckoutForm from '../../components/sectionA/CheckoutForm';
 import { useStore } from '../../app/StoreContext';
 import { formatPrice, getProduct } from '../../data/products';
 import type { CheckoutDetails } from '../../lib/checkout';
