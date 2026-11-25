@@ -2,20 +2,20 @@ import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useDispatch, useSelector } from "react-redux";
 import { Link, Navigate, useNavigate } from "react-router";
-import { orderPlaced } from "./cartSlice";
-import { selectSelectedLines, selectSelectedTotals } from "./cartSelectors";
-import type { CartDispatch, CartRootState } from "./cartStore";
+import { orderPlaced } from "../store/cartSlice";
+import { selectSelectedLines, selectSelectedTotals } from "../store/cartSelectors";
+import type { CartDispatch, CartRootState } from "../store/cartStore";
 import {
   checkoutSchema,
   emptyCheckoutForm,
   type CheckoutFormInput,
   type CheckoutFormValues,
-} from "./checkoutSchema";
-import { formatMoney } from "./pricing";
-import type { Order } from "./types";
-import { CheckoutStepper, PageShell } from "./components/SiteChrome";
-import { ArrowLeftIcon, ArrowRightIcon, LockIcon, MapPinIcon } from "./components/Icons";
-import "./CartPage.css";
+} from "../schemas/checkoutSchema";
+import { formatMoney } from "../utils/pricing";
+import type { Order } from "../types";
+import { CheckoutStepper, PageShell } from "../components/SiteChrome";
+import { ArrowLeftIcon, ArrowRightIcon, LockIcon, MapPinIcon } from "../components/Icons";
+import "../styles/CartPage.css";
 
 type FieldName = keyof CheckoutFormInput;
 

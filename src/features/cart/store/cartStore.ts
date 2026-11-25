@@ -1,11 +1,11 @@
 import { combineReducers, configureStore } from "@reduxjs/toolkit";
 import cartReducer from "./cartSlice";
 import orderReducer from "./orderSlice";
-import wishlistReducer, { type WishlistState } from "../wishlist/wishlistSlice";
-import { loadWishlist, saveWishlist } from "../wishlist/wishlistStorage";
+import wishlistReducer, { type WishlistState } from "../../wishlist/wishlistSlice";
+import { loadWishlist, saveWishlist } from "../../wishlist/wishlistStorage";
 import { loadCart, loadLastOrder, saveCart, saveLastOrder } from "./cartStorage";
-import { demoCartState, isDemoCartRequested } from "./demoCart";
-import type { CartState } from "./types";
+import { demoCartState, isDemoCartRequested } from "../data/demoCart";
+import type { CartState } from "../types";
 
 const rootReducer = combineReducers({
   cart: cartReducer,

@@ -6,8 +6,8 @@ They are kept here unchanged (only import paths were adjusted) so no work is los
 | File | Live owner / route |
 | --- | --- |
 | `ProductsPage.tsx` | Developer B — `src/pages/ProductsPage.tsx` (`/products`) |
-| `CartPage.tsx` | Developer C — `src/features/cart/CartPage.tsx` (`/cart`) |
-| `CheckoutPage.tsx` | Developer C — `src/features/cart/CheckoutPage.tsx` (`/checkout`, `/order-confirmation`) |
+| `CartPage.tsx` | Developer C — `src/features/cart/pages/CartPage.tsx` (`/cart`) |
+| `CheckoutPage.tsx` | Developer C — `src/features/cart/pages/CheckoutPage.tsx` (`/checkout`, `/order-confirmation`) |
 
 They still compile against the shared store (`src/app/StoreContext.tsx`), so they can be
 re-enabled or mined for ideas, but no route points at them.

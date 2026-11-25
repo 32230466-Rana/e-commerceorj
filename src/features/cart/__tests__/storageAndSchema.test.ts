@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { CART_STORAGE_KEY, LEGACY_SECTION_A_CART_KEY, loadCart, loadLastOrder, saveCart, saveLastOrder } from "../cartStorage";
-import { checkoutSchema } from "../checkoutSchema";
-import { isDemoCartRequested } from "../demoCart";
+import { CART_STORAGE_KEY, LEGACY_SECTION_A_CART_KEY, loadCart, loadLastOrder, saveCart, saveLastOrder } from "../store/cartStorage";
+import { checkoutSchema } from "../schemas/checkoutSchema";
+import { isDemoCartRequested } from "../data/demoCart";
 
 /** Minimal in-memory Storage so these tests do not need a DOM environment. */
 function memoryStorage(): Storage {

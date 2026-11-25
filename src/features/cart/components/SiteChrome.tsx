@@ -1,8 +1,8 @@
 import type { ReactNode } from "react";
 import { Link } from "react-router";
 import { useSelector } from "react-redux";
-import { selectCartCount } from "../cartSelectors";
-import type { CartRootState } from "../cartStore";
+import { selectCartCount } from "../store/cartSelectors";
+import type { CartRootState } from "../store/cartStore";
 import {
   BagIcon,
   BoxIcon,

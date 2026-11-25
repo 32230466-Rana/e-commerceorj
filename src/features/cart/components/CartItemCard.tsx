@@ -1,7 +1,7 @@
 import { useState, type CSSProperties } from "react";
-import type { CartLine } from "../cartSelectors";
-import { MAX_LINE_QUANTITY } from "../cartSchema";
-import { formatMoney } from "../pricing";
+import type { CartLine } from "../store/cartSelectors";
+import { MAX_LINE_QUANTITY } from "../schemas/cartSchema";
+import { formatMoney } from "../utils/pricing";
 import { CheckIcon, TrashIcon } from "./Icons";
 import { useDisplayImage } from "../../../catalog/useDisplayImage";
 

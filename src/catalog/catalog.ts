@@ -2,7 +2,7 @@
  * Shared SoleX catalog.
  *
  * Every developer keeps their own original product data file:
- *   - Developer C (cart):     src/features/cart/demoSneakers.ts   ids "1".."3" (numbers in the original data)
+ *   - Developer C (cart):     src/features/cart/data/demoSneakers.ts   ids "1".."3" (numbers in the original data)
  *   - Developer B (products): src/seed/productsSeed.ts            ids "kxn-01".."kxn-08"
  *   - Section A (home):       src/data/products.ts                ids "flame-01".."citrus-08"
  *
@@ -11,7 +11,7 @@
  * IDs, names, prices and images are taken unchanged from the source files.
  * Size/colour variants exist only where the source data defines them.
  */
-import { demoSneakers } from '../features/cart/demoSneakers';
+import { demoSneakers } from '../features/cart/data/demoSneakers';
 import { initialProductsSeed } from '../seed/productsSeed';
 import { products as sectionAProducts } from '../data/products';
 import type { Product as DevBProduct } from '../types/product';

@@ -1,6 +1,6 @@
 import { useId, useState } from "react";
 import { Link } from "react-router";
-import { FREE_SHIPPING_THRESHOLD, formatMoney } from "../pricing";
+import { FREE_SHIPPING_THRESHOLD, formatMoney } from "../utils/pricing";
 import type { OrderTotals } from "../types";
 import { ArrowLeftIcon, ArrowRightIcon, LockIcon, SoleXMark, TicketIcon } from "./Icons";
 

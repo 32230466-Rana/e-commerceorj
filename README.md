@@ -18,11 +18,11 @@ original owner's design:
 
 Shared pieces:
 
-- **One Redux store** (`src/features/cart/cartStore.ts`) holds `cart`, `order` and `wishlist`.
+- **One Redux store** (`src/features/cart/store/cartStore.ts`) holds `cart`, `order` and `wishlist`.
   Section A's `useStore()` hook (`src/app/StoreContext.tsx`) keeps its API but reads/writes Redux,
   so the Navbar counters, Home, Products and Cart always agree. The theme stays in React context.
 - **One catalog** (`src/catalog/catalog.ts`) adapts each developer's original product file
-  (`src/features/cart/demoSneakers.ts`, `src/seed/productsSeed.ts`, `src/data/products.ts`)
+  (`src/features/cart/data/demoSneakers.ts`, `src/seed/productsSeed.ts`, `src/data/products.ts`)
   without changing their ids, prices or images, so any product can be added to the same cart.
 - Saved data from the old branches (`solex:cart:v1` with numeric ids, `kixon-cart`,
   `kixon-wishlist`, `kixon_wishlist`, `kixon-theme`) is migrated automatically on first load.

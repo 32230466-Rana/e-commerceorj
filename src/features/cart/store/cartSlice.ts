@@ -1,11 +1,11 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
-import { MAX_LINE_QUANTITY } from "./cartSchema";
+import { MAX_LINE_QUANTITY } from "../schemas/cartSchema";
 import {
   getCatalogProduct,
   isSupportedColor,
   isSupportedSize,
-} from "../../catalog/catalog";
-import type { CartState, Order } from "./types";
+} from "../../../catalog/catalog";
+import type { CartState, Order } from "../types";
 //addItem,updateQuantity,removeItem,clearCart,updateVariant
 const initialState: CartState = {
   items: [],

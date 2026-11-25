@@ -10,20 +10,20 @@ import {
   toggleSelected,
   updateQuantity,
   updateVariant,
-} from "./cartSlice";
-import { selectCartLines, selectSelectedLines, selectSelectedTotals } from "./cartSelectors";
-import { isDemoCart, type CartDispatch, type CartRootState } from "./cartStore";
-import { cartShowcaseProducts } from "../../catalog/catalog";
-import { addToWishlist } from "../wishlist/wishlistSlice";
-import { MAX_LINE_QUANTITY } from "./cartSchema";
-import { formatMoney } from "./pricing";
-import CartItemCard from "./components/CartItemCard";
-import CartSummary from "./components/CartSummary";
-import AddToCartButton from "./components/AddToCartButton";
-import SneakerShowcase from "./components/SneakerShowcase";
-import { CheckoutStepper, PageShell } from "./components/SiteChrome";
-import { CartIcon, CheckIcon, HeartIcon, TrashIcon } from "./components/Icons";
-import "./CartPage.css";
+} from "../store/cartSlice";
+import { selectCartLines, selectSelectedLines, selectSelectedTotals } from "../store/cartSelectors";
+import { isDemoCart, type CartDispatch, type CartRootState } from "../store/cartStore";
+import { cartShowcaseProducts } from "../../../catalog/catalog";
+import { addToWishlist } from "../../wishlist/wishlistSlice";
+import { MAX_LINE_QUANTITY } from "../schemas/cartSchema";
+import { formatMoney } from "../utils/pricing";
+import CartItemCard from "../components/CartItemCard";
+import CartSummary from "../components/CartSummary";
+import AddToCartButton from "../components/AddToCartButton";
+import SneakerShowcase from "../components/SneakerShowcase";
+import { CheckoutStepper, PageShell } from "../components/SiteChrome";
+import { CartIcon, CheckIcon, HeartIcon, TrashIcon } from "../components/Icons";
+import "../styles/CartPage.css";
 
 export default function CartPage() {
   const dispatch = useDispatch<CartDispatch>();

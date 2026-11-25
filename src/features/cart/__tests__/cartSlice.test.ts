@@ -9,10 +9,10 @@ import reducer, {
   toggleSelected,
   updateQuantity,
   updateVariant,
-} from "../cartSlice";
-import orderReducer from "../orderSlice";
-import { selectCartLines, selectSelectedTotals } from "../cartSelectors";
-import { MAX_LINE_QUANTITY } from "../cartSchema";
+} from "../store/cartSlice";
+import orderReducer from "../store/orderSlice";
+import { selectCartLines, selectSelectedTotals } from "../store/cartSelectors";
+import { MAX_LINE_QUANTITY } from "../schemas/cartSchema";
 import type { CartState, Order } from "../types";
 
 const start = (): CartState => ({

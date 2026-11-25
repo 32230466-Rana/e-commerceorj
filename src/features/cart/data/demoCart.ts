@@ -1,4 +1,4 @@
-import type { CartState } from "./types";
+import type { CartState } from "../types";
 
 /**
  * Three-product state used ONLY for isolated visual testing (open the app with

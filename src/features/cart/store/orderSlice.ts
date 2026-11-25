@@ -1,6 +1,6 @@
 import { createSlice, type PayloadAction } from "@reduxjs/toolkit";
 import { addItem, orderPlaced } from "./cartSlice";
-import type { Order } from "./types";
+import type { Order } from "../types";
 
 export interface OrderState {
   lastOrder: Order | null;

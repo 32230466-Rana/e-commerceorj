@@ -7,9 +7,9 @@ import { ProductsPage } from '../pages/ProductsPage';
 import WishlistPage from '../pages/WishlistPage';
 import AboutPage from '../pages/AboutPage';
 import NotFoundPage from '../pages/NotFoundPage';
-import CartPage from '../features/cart/CartPage';
-import CheckoutPage from '../features/cart/CheckoutPage';
-import OrderConfirmationPage from '../features/cart/OrderConfirmationPage';
+import CartPage from '../features/cart/pages/CartPage';
+import CheckoutPage from '../features/cart/pages/CheckoutPage';
+import OrderConfirmationPage from '../features/cart/pages/OrderConfirmationPage';
 
 /**
  * Single router for the integrated SoleX site.

@@ -1,10 +1,10 @@
 import { useSelector } from "react-redux";
 import { Link, Navigate } from "react-router";
-import type { CartRootState } from "./cartStore";
-import { formatMoney } from "./pricing";
-import { CheckoutStepper, PageShell } from "./components/SiteChrome";
-import { ArrowLeftIcon } from "./components/Icons";
-import "./CartPage.css";
+import type { CartRootState } from "../store/cartStore";
+import { formatMoney } from "../utils/pricing";
+import { CheckoutStepper, PageShell } from "../components/SiteChrome";
+import { ArrowLeftIcon } from "../components/Icons";
+import "../styles/CartPage.css";
 
 export default function OrderConfirmationPage() {
   const order = useSelector((state: CartRootState) => state.order.lastOrder);

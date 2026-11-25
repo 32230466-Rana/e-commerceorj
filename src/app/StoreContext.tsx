@@ -2,17 +2,17 @@
  * SECTION A — Shared store hook used by the Navbar, Home, product cards and Wishlist page.
  *
  * Integration: the public API (`useStore()`) is unchanged, but cart and wishlist now
- * come from the single Redux store (src/features/cart/cartStore.ts), so the Navbar
+ * come from the single Redux store (src/features/cart/store/cartStore.ts), so the Navbar
  * counters, Home, Products and the Cart page all see the same data. Only the
  * light/dark theme still lives in this context.
  */
 import { createContext, useContext, useEffect, useMemo, useState, type ReactNode } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
 import type { CartItem } from '../lib/cart';
-import { MAX_LINE_QUANTITY } from '../features/cart/cartSchema';
-import { addItem, clearCart, removeItem, updateQuantity } from '../features/cart/cartSlice';
-import { selectCartCount, selectCartLines, selectCartItems } from '../features/cart/cartSelectors';
-import type { CartDispatch, CartRootState } from '../features/cart/cartStore';
+import { MAX_LINE_QUANTITY } from '../features/cart/schemas/cartSchema';
+import { addItem, clearCart, removeItem, updateQuantity } from '../features/cart/store/cartSlice';
+import { selectCartCount, selectCartLines, selectCartItems } from '../features/cart/store/cartSelectors';
+import type { CartDispatch, CartRootState } from '../features/cart/store/cartStore';
 import { selectWishlistIds, toggleWishlist } from '../features/wishlist/wishlistSlice';
 
 type Theme = 'light' | 'dark';

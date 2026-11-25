@@ -1,7 +1,7 @@
 import { createSelector } from "@reduxjs/toolkit";
-import { getCatalogProduct, type CatalogProduct } from "../../catalog/catalog";
-import { roundMoney, shippingFor } from "./pricing";
-import type { CartItem, CartState, OrderTotals } from "./types";
+import { getCatalogProduct, type CatalogProduct } from "../../../catalog/catalog";
+import { roundMoney, shippingFor } from "../utils/pricing";
+import type { CartItem, CartState, OrderTotals } from "../types";
 
 export interface CartRootState {
   cart: CartState;

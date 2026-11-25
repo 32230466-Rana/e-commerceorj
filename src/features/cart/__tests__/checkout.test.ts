@@ -1,7 +1,7 @@
 import { describe, expect, it } from "vitest";
-import { checkoutSchema, emptyCheckoutForm } from "../checkoutSchema";
-import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING, formatMoney, roundMoney, shippingFor } from "../pricing";
-import { selectSelectedTotals } from "../cartSelectors";
+import { checkoutSchema, emptyCheckoutForm } from "../schemas/checkoutSchema";
+import { FREE_SHIPPING_THRESHOLD, STANDARD_SHIPPING, formatMoney, roundMoney, shippingFor } from "../utils/pricing";
+import { selectSelectedTotals } from "../store/cartSelectors";
 
 const valid = {
   fullName: "Alex Morgan",

@@ -1,6 +1,6 @@
-import { getCatalogProduct } from "../../catalog/catalog";
-import { cartItemSchema, orderSchema, persistedCartSchema } from "./cartSchema";
-import type { CartState, Order } from "./types";
+import { getCatalogProduct } from "../../../catalog/catalog";
+import { cartItemSchema, orderSchema, persistedCartSchema } from "../schemas/cartSchema";
+import type { CartState, Order } from "../types";
 
 export const CART_STORAGE_KEY = "solex:cart:v1";
 /** Section A's pre-integration cart ({ productId: string, quantity }[]), imported once. */

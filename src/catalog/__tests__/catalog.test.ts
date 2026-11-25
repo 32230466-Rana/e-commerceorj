@@ -1,5 +1,5 @@
 import { describe, expect, it } from "vitest";
-import { demoSneakers } from "../../features/cart/demoSneakers";
+import { demoSneakers } from "../../features/cart/data/demoSneakers";
 import { initialProductsSeed } from "../../seed/productsSeed";
 import { products as sectionAProducts } from "../../data/products";
 import { catalog, getCatalogProduct, toDevBProduct } from "../catalog";
